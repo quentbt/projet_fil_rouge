@@ -1,0 +1,11 @@
+* {
+    box-sizing: border-box;
+}
+
+
+.container {
+    margin-top: 5rem;
+    margin-left: 5%;
+    margin-right: 5%;
+    width: 100%;
+}
