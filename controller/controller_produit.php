@@ -8,7 +8,7 @@ function allProduit()
 {
     global $bdd;
 
-    $produits = $bdd->query("SELECT * FROM produits");
+    $produits = $bdd->query("SELECT * FROM produits ORDER BY id_produit");
     $resultat = $produits->fetchAll(PDO::FETCH_ASSOC);
 
     return $resultat;
@@ -38,6 +38,17 @@ function infoProduit($id_produit)
     return $produit;
 }
 
+function allMateriaux()
+{
+    global $bdd;
+
+    $allMateriaux = $bdd->query("SELECT * FROM materiaux");
+    $materiaux = $allMateriaux->fetchAll(PDO::FETCH_ASSOC);
+
+    return $materiaux;
+}
+
+
 // Permet d'obtenir tous les matériaux d'un produit
 function materiauxProduit($id_produit)
 {
@@ -62,10 +73,18 @@ function produitSimilaire($id_produit)
     return $produitSimilaire->fetchAll(PDO::FETCH_ASSOC);
 }
 
-// Permet de supprimer un produit (A FAIRE)
+// Permet de supprimer un produit
 function deleteProduit($id_produit)
 {
     global $bdd;
+
+    foreach ($id_produit as $id) {
+
+        $deleteProduit = $bdd->prepare("DELETE FROM produits WHERE id_produit = :id_produit");
+        $deleteProduit->bindParam(":id_produit", $id);
+        $deleteProduit->execute();
+    }
+    header("Location: /pages/back_produits.php");
 }
 
 // Récupère le stock d'un produit
@@ -127,5 +146,61 @@ function nouveauStock($quantite, $id_produit)
         $updateStock->bindParam(":nouveauStock", $newStock);
         $updateStock->bindParam(":id_produit", $id);
         $updateStock->execute();
+    }
+}
+
+function maxIdProduit()
+{
+    global $bdd;
+
+    $maxId = $bdd->query("SELECT MAX(id_produit) FROM produits");
+    $id = $maxId->fetchColumn();
+
+    return $id;
+}
+
+function ajouterProduit($id_categorie, $nom, $description, $prix, $piece, $stock, $materiaux, $nomImage, $origineImage)
+{
+    global $bdd;
+
+
+    $id_produit = maxIdProduit();
+    $id_produit++;
+
+    $verification = $bdd->prepare("SELECT * FROM produits WHERE nom = :nom");
+    $verification->bindParam(":nom", $nom);
+    $verification->execute();
+
+    if ($verification->rowCount() == 0) {
+
+        $destination = "../images/" . $nomImage;
+        move_uploaded_file($origineImage, $destination);
+
+        $name = "/images/" . $nomImage;
+
+        $add = $bdd->prepare("INSERT INTO produits(id_produit, nom, description, prix, piece, stock, categorie, image_produit) VALUES (:id_prod, :nom, :desc, :prix, :piece, :stock, :categ, :img)");
+        $add->bindParam(":id_prod", $id_produit);
+        $add->bindParam(":nom", $nom);
+        $add->bindParam(":desc", $description);
+        $add->bindParam(":prix", $prix);
+        $add->bindParam(":piece", $piece);
+        $add->bindParam(":stock", $stock);
+        $add->bindParam(":categ", $id_categorie);
+        $add->bindParam(":img", $name);
+        $add->execute();
+
+        foreach ($materiaux as $mat) {
+
+            $m = intval($mat);
+
+            $prod_mat = $bdd->prepare("INSERT INTO prod_mat(id_produit, id_materiaux) VALUES (:id_prod, :id_mat)");
+            $prod_mat->bindParam(":id_prod", $id_produit);
+            $prod_mat->bindParam(":id_mat", $m);
+            $prod_mat->execute();
+        }
+        header("Location: /pages/back_produits.php");
+    } else {
+
+        echo "Un produit possède déjà ce nom, veuillez changer";
     }
 }

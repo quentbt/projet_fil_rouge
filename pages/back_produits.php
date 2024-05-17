@@ -13,7 +13,6 @@ $produits = allProduit();
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <link rel="stylesheet" href="../css_files/table_back.css">
-    <link rel="stylesheet" href="../css_files/input_checkbox.css">
     <title>backOffice Produit</title>
 </head>
 
@@ -22,12 +21,14 @@ $produits = allProduit();
         <a href="/pages/ajouter_produit.php">
             <button id="bouton-ajouter" type="button" class="btn btn-primary">Ajouter</button>
         </a>
-        <form method="POST">
-            <table class="table table-hover table-dark">
+        <br>
+        <br>
+        <form method="POST" action="../controller/controller_formulaire.php">
+            <table class="table table-hover">
                 <thead>
                     <tr>
                         <th scope="col">
-                            <input type="checkbox" name="allProduits" id="tout">
+                            <input type="checkbox" name="allProduits" id="tout" class="form-check-input">
                             <label for="allProduits">ID Produit</label>
                         </th>
                         <th scope="col">Nom</th>
@@ -41,13 +42,11 @@ $produits = allProduit();
                         <tr>
                             <th>
                                 <div class="container_checkbox">
-                                    <label for="">
-                                        <input type="checkbox" id="<?= $produit["id_produit"] ?>" name="produit[]" />
-                                        <?= $produit["id_produit"] ?>
-                                    </label>
+                                    <input type="checkbox" id="<?= $produit["id_produit"] ?>" name="id_produit[]" class="form-check-input" value="<?= $produit["id_produit"] ?>" />
+                                    <?= $produit["id_produit"] ?>
                                 </div>
                             </th>
-                            <td><a style="text-decoration: none; color: white;" href="modif_produit.php?id_produit=<?= $produit["id_produit"] ?>"><?= $produit["nom"] ?></a></td>
+                            <td><a style="text-decoration: none; color:black" href="modif_produit.php?id_produit=<?= $produit["id_produit"] ?>"><?= $produit["nom"] ?></a></td>
                             <td><?= $produit["prix"] ?></td>
                             <td><?= $produit["stock"] ?></td>
                         </tr>
@@ -55,19 +54,16 @@ $produits = allProduit();
                     <?php } ?>
                 </tbody>
             </table>
+            <div class="text-end">
+                <button id="bouton-supprimer" type="submit" class="btn btn-danger" name="bouton_supprimer_produit" disabled>Supprimer</button>
+            </div>
         </form>
-        <button id="bouton-modifier" type="button" class="btn btn-primary" disabled>Modifier</button>
-        <button id="bouton-supprimer" type="button" class="btn btn-danger" disabled>Supprimer</button>
     </div>
 
-
-
     <script>
-        // Récupérer la case à cocher "tout"
         var checkboxTout = document.getElementById("tout");
 
-        // Récupérer toutes les cases à cocher des produits
-        var checkboxesProduits = document.querySelectorAll("input[name='produit[]']");
+        var checkboxesProduits = document.querySelectorAll("input[name='id_produit[]']");
 
         // Ajouter un écouteur d'événement de clic à la case à cocher "tout"
         checkboxTout.addEventListener("click", function() {
@@ -79,14 +75,10 @@ $produits = allProduit();
         });
     </script>
     <script>
-        // Sélectionner les boutons que vous souhaitez activer ou désactiver
-        var boutonModifier = document.getElementById("bouton-modifier");
         var boutonSupprimer = document.getElementById("bouton-supprimer");
 
-        // Ajouter un écouteur d'événement à chaque case à cocher
         checkboxesProduits.forEach(function(checkbox) {
             checkbox.addEventListener("change", function() {
-                // Vérifier si au moins une case à cocher est cochée
                 var auMoinsUneSelectionnee = false;
                 checkboxesProduits.forEach(function(checkbox) {
                     if (checkbox.checked) {
@@ -94,12 +86,9 @@ $produits = allProduit();
                     }
                 });
 
-                // Activer ou désactiver les boutons en fonction de la sélection
                 if (auMoinsUneSelectionnee) {
-                    boutonModifier.disabled = false;
                     boutonSupprimer.disabled = false;
                 } else {
-                    boutonModifier.disabled = true;
                     boutonSupprimer.disabled = true;
                 }
             });

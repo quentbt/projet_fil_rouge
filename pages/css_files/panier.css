@@ -38,7 +38,7 @@ img {
 
 .bouton_suppr {
 
-    background-color: lightgray;
+    background-color: white;
     border: none;
     border-radius: 40%;
     justify-content: center;
@@ -46,4 +46,9 @@ img {
     display: flex;
     padding: 5px;
     margin-bottom: 1rem;
+}
+
+.bouton_suppr:hover {
+
+    background-color: lightgray;
 }

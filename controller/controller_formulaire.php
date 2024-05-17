@@ -34,5 +34,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         nouveauStock($quantite, $id_produit);
         PanierValide($id_panier, $id_client);
+    } elseif (isset($_POST["bouton_supprimer_produit"])) {
+
+        $id_produit = $_POST["id_produit"];
+        deleteProduit($id_produit);
+    } elseif (isset($_POST["ajouter_produit"])) {
+
+        $nom = $_POST["nom"];
+        $desc = $_POST["desc"];
+        $prix = $_POST["prix"];
+        $stock = $_POST["stock"];
+        $categ = $_POST["categ"];
+        $piece = $_POST["piece"];
+        $materiaux = $_POST["materiaux"];
+        $nomImage = $_FILES["image"]["name"];
+        $origineImage = $_FILES["image"]["tmp_name"];
+
+        ajouterProduit($categ, $nom, $desc, $prix, $piece, $stock, $materiaux, $nomImage, $origineImage);
     }
 }

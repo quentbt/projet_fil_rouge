@@ -55,7 +55,7 @@ $tva = $prixTotal * (20 / 100);
                                 <?php } ?>
                             </select>
                             <br>
-                            <button class="bouton_suppr" type="button">
+                            <button class="bouton_suppr" type="button" name="bouton_suppr_produit_panier">
                                 <span class="material-symbols-outlined">
                                     delete
                                 </span>

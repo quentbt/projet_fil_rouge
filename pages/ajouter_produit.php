@@ -1,72 +1,12 @@
 <?php
 
-require_once "../connexion_bdd/connexion_bdd.php";
-$bdd = db_connect();
+require_once "../controller/controller_categorie.php";
+require_once "../controller/controller_produit.php";
 
-$categories = $bdd->query("SELECT * FROM categories");
-$categorie = $categories->fetchAll(PDO::FETCH_ASSOC);
+$categorie = allCategorie();
 
-$materiaux = $bdd->query("SELECT * FROM materiaux");
-$materiel = $materiaux->fetchAll(PDO::FETCH_ASSOC);
+$materiaux = allMateriaux();
 
-$max_id_produit = $bdd->query("SELECT MAX(id_produit) FROM produits");
-$max_id_prod = $max_id_produit->fetchColumn();
-
-$max_id_prod++;
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Récupérer les valeurs des champs de texte
-    $nom = $_POST["nom"];
-    $desc = $_POST["desc"];
-    $prix = $_POST["prix"];
-    $stock = $_POST["stock"];
-    $categ = $_POST["categ"];
-    $piece = $_POST["piece"];
-
-    $verification = $bdd->prepare("SELECT * FROM produits WHERE nom = :nom");
-    $verification->bindParam(":nom", $nom);
-    $verification->execute();
-
-    if ($verification->rowCount() == 0) {
-        $mat = isset($_POST["materiaux"]) ? $_POST["materiaux"] : [];
-        var_dump($materiaux);
-
-        $name = $_FILES["image"]["name"];
-        $tmp = $_FILES["image"]["tmp_name"];
-
-        $destination = "../images/" . $name;
-        move_uploaded_file($tmp, $destination);
-
-        $name = "/images/" . $name;
-
-        $add = $bdd->prepare("INSERT INTO produits(id_produit, nom, description, prix, stock, categorie, image_produit, piece) VALUES (:id_prod, :nom, :desc, :prix, :stock, :categ, :img, :piece)");
-        $add->bindParam(":id_prod", $max_id_prod);
-        $add->bindParam(":nom", $nom);
-        $add->bindParam(":desc", $desc);
-        $add->bindParam(":prix", $prix);
-        $add->bindParam(":stock", $stock);
-        $add->bindParam(":categ", $categ);
-        $add->bindParam(":img", $name);
-        $add->bindParam(":piece", $piece);
-        $add->execute();
-
-        $id_nouveau_produit = $bdd->query("SELECT id_produit FROM produits WHERE nom = '$nom'");
-        $id_prod = $id_nouveau_produit->fetchColumn();
-
-        foreach ($mat as $m) {
-
-            $m = intval($m);
-
-            $prod_mat = $bdd->prepare("INSERT INTO prod_mat(id_produit, id_materiaux) VALUES (:id_prod, :id_mat)");
-            $prod_mat->bindParam(":id_prod", $id_prod);
-            $prod_mat->bindParam(":id_mat", $m);
-            $prod_mat->execute();
-        }
-    } else {
-
-        echo "Un produit possède déjà ce nom, veuillez changer";
-    }
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -88,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="form-card">
 
         <h2 class="text-center">Information du nouveau produit</h2>
-        <form method="POST" enctype="multipart/form-data">
+        <form method="POST" enctype="multipart/form-data" action="../controller/controller_formulaire.php">
             <div class="row">
                 <div class="col-3">
                     <div class="form__group field m-0">
@@ -137,7 +77,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <br>
             <br>
             <p>Quels matériaux composent ce produit ?</p>
-            <?php foreach ($materiel as $mat) { ?>
+            <?php foreach ($materiaux as $mat) { ?>
                 <div class="form-check form-check-inline">
                     <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="<?= $mat["id_materiaux"] ?>" name="materiaux[]">
                     <label class="form-check-label" for="<?= $mat["materiaux"] ?>"><?= $mat["materiaux"] ?></label>
@@ -152,7 +92,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <br>
             <br>
             <div class="d-flex justify-content-center">
-                <button class="button" type="submit" name="modif">
+                <button class="button" type="submit" name="ajouter_produit">
                     <span class="button-text">Ajouter</span>
                     <div class="fill-container"></div>
                 </button>

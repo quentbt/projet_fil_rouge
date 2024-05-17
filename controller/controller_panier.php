@@ -42,9 +42,12 @@ function affichePanier($id_client)
     global $bdd;
 
     $id_panier = maxPanierId($id_client);
+    $id = intval($id_panier);
+
 
     $produitPanier = $bdd->prepare("SELECT produits.*, panier_produit.* FROM produits LEFT JOIN panier_produit ON produits.id_produit = panier_produit.id_produit WHERE panier_produit.id_panier = :panier");
-    $produitPanier->bindParam(":panier", $id_panier);
+    $produitPanier->bindParam(":panier", $id);
+    $produitPanier->execute();
     $panier = $produitPanier->fetchAll(PDO::FETCH_ASSOC);
 
     return $panier;
