@@ -3,6 +3,7 @@
 require_once "../connexion_bdd/connexion_bdd.php";
 $bdd = db_connect();
 
+// Récupère toutes les catégories
 function allCategorie()
 {
 
@@ -14,6 +15,7 @@ function allCategorie()
     return $categorie;
 }
 
+// 
 function categorieAccueil()
 {
     global $bdd;
@@ -23,8 +25,7 @@ function categorieAccueil()
     return $categories;
 }
 
-
-
+// Change l'ordre d'affichage des catégories sur la page d'accueil
 function modifOrdre($id_categ, $donnees)
 {
     global $bdd;
@@ -42,7 +43,7 @@ function modifOrdre($id_categ, $donnees)
     header("Location: /pages/back_categorie.php");
 }
 
-
+// Modifie une catégorie
 function modifCateg($categorie, $emplacementImage, $nomImage, $nouveau_nom_categorie)
 {
 

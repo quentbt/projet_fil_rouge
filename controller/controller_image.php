@@ -3,6 +3,7 @@
 require_once "../connexion_bdd/connexion_bdd.php";
 $bdd = db_connect();
 
+// Récupère toutes les images
 function allImage()
 {
 
@@ -13,6 +14,7 @@ function allImage()
     return $images;
 }
 
+// retourne l'image d'une catégorie
 function imageCategorie($categorie)
 {
     global $bdd;
@@ -23,6 +25,7 @@ function imageCategorie($categorie)
     return $imageCategorie->fetch(PDO::FETCH_ASSOC)["img_categ"];
 }
 
+// Retournes toutes les images d'un produit
 function imageProduit($id_produit)
 {
     global $bdd;

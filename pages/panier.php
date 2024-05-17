@@ -11,9 +11,6 @@ $id_panier = maxPanierId($id_client);
 $prixTotal = prixQtt($id_panier);
 $tva = $prixTotal * (20 / 100);
 
-$test = panierHistorique($id_client);
-echo $test;
-
 ?>
 <!DOCTYPE html>
 <html lang="en">

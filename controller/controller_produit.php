@@ -3,6 +3,7 @@
 require_once "../connexion_bdd/connexion_bdd.php";
 $bdd = db_connect();
 
+// Permet d'obtenir tous les produits
 function allProduit()
 {
     global $bdd;
@@ -13,6 +14,7 @@ function allProduit()
     return $resultat;
 }
 
+// Permet d'obtenir tous les produits pour 1 catégorie
 function produitCategorie($categorie)
 {
     global $bdd;
@@ -24,6 +26,7 @@ function produitCategorie($categorie)
     return $produitCateg;
 }
 
+// Permet d'obtenir toutes les infos d'un produit
 function infoProduit($id_produit)
 {
     global $bdd;
@@ -35,6 +38,7 @@ function infoProduit($id_produit)
     return $produit;
 }
 
+// Permet d'obtenir tous les matériaux d'un produit
 function materiauxProduit($id_produit)
 {
     global $bdd;
@@ -46,6 +50,7 @@ function materiauxProduit($id_produit)
     return $selectMateriauxProduit->fetchAll(PDO::FETCH_ASSOC);
 }
 
+// Permet d'obtenir 6 produits similaires (c'est à dire de la même catégorie) qui ont du stock
 function produitSimilaire($id_produit)
 {
     global $bdd;
@@ -57,11 +62,13 @@ function produitSimilaire($id_produit)
     return $produitSimilaire->fetchAll(PDO::FETCH_ASSOC);
 }
 
+// Permet de supprimer un produit (A FAIRE)
 function deleteProduit($id_produit)
 {
     global $bdd;
 }
 
+// Récupère le stock d'un produit
 function stockProduit($id_produit)
 {
     global $bdd;
@@ -75,6 +82,7 @@ function stockProduit($id_produit)
     return $stock;
 }
 
+// Répère le prix d'un produit
 function prixProduit($id_produit)
 {
     global $bdd;
@@ -88,7 +96,7 @@ function prixProduit($id_produit)
     return $prix;
 }
 
-
+// Permet de choisir une quantité pour un produit (MAX : 10)
 function quantite($id_produit)
 {
     $stock = stockProduit($id_produit);
@@ -103,6 +111,7 @@ function quantite($id_produit)
     return $quantite;
 }
 
+// Actualise les stocks après avoir passé une commande
 function nouveauStock($quantite, $id_produit)
 {
     global $bdd;

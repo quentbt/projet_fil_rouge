@@ -5,6 +5,7 @@ require_once '../controller/controller_produit.php';
 
 $bdd = db_connect();
 
+// Récupère l'id max dans la table panier
 function maxPanierId($id_client)
 {
     global $bdd;
@@ -16,16 +17,18 @@ function maxPanierId($id_client)
 
     if (!isset($id)) {
 
-        $id = 1;
+        $id = 0;
     }
 
     return $id;
 }
 
+// Créer un nouveau panier
 function createPanier($id_client)
 {
     global $bdd;
     $id = maxPanierId($id_client);
+    $id += 1;
 
     $creationPanierClient = $bdd->prepare("INSERT INTO panier VALUES (:id_panier, :id_client)");
     $creationPanierClient->bindParam(":id_panier", $id);
@@ -33,17 +36,21 @@ function createPanier($id_client)
     $creationPanierClient->execute();
 }
 
+// Affiche le panier sur la page panier.php
 function affichePanier($id_client)
 {
     global $bdd;
 
-    $panier = maxPanierId($id_client);
-    $produitPanier = $bdd->query("SELECT produits.*, panier_produit.* FROM produits LEFT JOIN panier_produit ON produits.id_produit = panier_produit.id_produit WHERE produits.id_produit = panier_produit.id_produit");
+    $id_panier = maxPanierId($id_client);
+
+    $produitPanier = $bdd->prepare("SELECT produits.*, panier_produit.* FROM produits LEFT JOIN panier_produit ON produits.id_produit = panier_produit.id_produit WHERE panier_produit.id_panier = :panier");
+    $produitPanier->bindParam(":panier", $id_panier);
     $panier = $produitPanier->fetchAll(PDO::FETCH_ASSOC);
 
     return $panier;
 }
 
+// Insère un nouveau produit dans le panier
 function insertPanier($id_produit, $quantite, $id_client)
 {
     global $bdd;
@@ -59,6 +66,7 @@ function insertPanier($id_produit, $quantite, $id_client)
     header("Location: /pages/panier.php");
 }
 
+// Obtenir le prix total dans le panier
 function prixQtt($id_panier)
 {
     global $bdd;
@@ -82,6 +90,7 @@ function prixQtt($id_panier)
     return $prixFinal += $tva;
 }
 
+// Permet de validé une commande, créer un nouveau panier qui permet de remettre la page panier.php blanche
 function PanierValide($id_panier, $id_client)
 {
     global $bdd;
@@ -91,16 +100,5 @@ function PanierValide($id_panier, $id_client)
     $insertHist->execute();
 
     createPanier($id_client);
-}
-
-function panierHistorique($id_client)
-{
-    global $bdd;
-
-    $panierHist = $bdd->prepare("SELECT historique.id_panier FROM historique JOIN panier_produit ON historique.id_panier = panier_produit.id_panier JOIN panier ON panier_produit.id_panier = panier.id_panier WHERE panier.id_client = :id_client ORDER BY historique.id_panier DESC LIMIT 1;");
-    $panierHist->bindParam(":id_client", $id_client);
-    $panierHist->execute();
-    $panier = $panierHist->fetchColumn();
-
-    return $panier;
+    header("Location: /pages/accueil.php");
 }

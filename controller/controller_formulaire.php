@@ -3,7 +3,7 @@ require_once 'controller_categorie.php';
 require_once 'controller_produit.php';
 require_once 'controller_panier.php';
 
-
+// Tous les formulaires arrivent sur cette page, des méthodes sont exécutés en fonction des boutons envoyés.
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (isset($_POST["ordreCateg"])) {
@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $id_produit = $_POST["id_produit"];
         $quantite = $_POST["quantite"];
 
-        // nouveauStock($quantite, $id_produit);
-        // PanierValide($id_panier);
+        nouveauStock($quantite, $id_produit);
+        PanierValide($id_panier, $id_client);
     }
 }

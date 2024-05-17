@@ -35,7 +35,6 @@ $images = $imageSelect->fetchAll(PDO::FETCH_ASSOC);
     <h2 class="text-center">CATEGORIES</h2>
     <div class="row justify-content-center m-4">
 
-        <!-- DEBUT CATEGORIES -->
         <?php foreach ($categories as $categorie) { ?>
             <div class="col-3 m-3">
                 <a href="/pages/categorie.php?categorie=<?= $categorie["categorie"] ?>" class="card">

@@ -18,7 +18,7 @@ $materiaux = materiauxProduit($id_produit);
 //Récupère aléatoirement 6 produits de la même catégorie que le produit sur la page
 $produitSimil = produitSimilaire($id_produit);
 
-// Quantité qu'on peut commander
+// Quantité qu'on peut commander (MAX : 10)
 $quantite = quantite($id_produit);
 
 ?>
