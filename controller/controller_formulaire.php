@@ -2,6 +2,7 @@
 require_once 'controller_categorie.php';
 require_once 'controller_produit.php';
 require_once 'controller_panier.php';
+require_once 'controller_image.php';
 
 // Tous les formulaires arrivent sur cette page, des méthodes sont exécutés en fonction des boutons envoyés.
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -47,16 +48,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $categ = $_POST["categ"];
         $piece = $_POST["piece"];
         $materiaux = $_POST["materiaux"];
-        $nomImage = $_FILES["image"]["name"];
-        $origineImage = $_FILES["image"]["tmp_name"];
 
-        ajouterProduit($categ, $nom, $desc, $prix, $piece, $stock, $materiaux, $nomImage, $origineImage);
+        //image reference produit
+        $nom_image_ref = $_FILES["image"]["name"];
+        $origine_image_ref = $_FILES["image"]["tmp_name"];
+
+        //toutes images produit
+        $images = $_FILES["image_produit"];
+
+        ajouterProduit($categ, $nom, $desc, $prix, $piece, $stock, $materiaux, $nom_image_ref, $origine_image_ref);
+        ajouterImageProduit($images);
     } elseif (isset($_POST["id_produit"]) && isset($_POST["id_panier"])) {
 
-        var_dump($_POST);
         $id_produit = $_POST["id_produit"];
         $id_panier = $_POST["id_panier"];
 
         deleteProduitPanier($id_produit, $id_panier);
+    } elseif (isset($_POST["produit_carrousel_accueil"])) {
+
+        $id_produit = $_POST["id_produit"];
+        produitActif($id_produit);
     }
 }

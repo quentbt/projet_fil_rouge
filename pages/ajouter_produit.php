@@ -89,6 +89,10 @@ $materiaux = allMateriaux();
                 <label for="formFile" class="form-label">Image référence </label>
                 <input class="form-control" type="file" id="formFile" name="image">
             </div>
+            <div class="mb-3">
+                <label for="formFile" class="form-label">Image du produit </label>
+                <input class="form-control" type="file" id="formFile" name="image_produit[]" multiple>
+            </div>
             <br>
             <br>
             <div class="d-flex justify-content-center">

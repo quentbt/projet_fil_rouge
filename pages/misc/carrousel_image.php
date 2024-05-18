@@ -2,7 +2,7 @@
     <div class="carousel">
         <?php foreach ($images as $image) { ?>
             <div class="item active">
-                <img class="img-carrousel" src="/images/<?= $image["nom"] ?>" alt="" />
+                <img class="img-carrousel" src="/images/<?= $image["nom_image"] ?>" alt="" />
             </div>
         <?php } ?>
     </div>

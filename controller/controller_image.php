@@ -1,6 +1,8 @@
 <?php
 
 require_once "../connexion_bdd/connexion_bdd.php";
+require_once "../controller/controller_produit.php";
+
 $bdd = db_connect();
 
 // Récupère toutes les images
@@ -30,9 +32,31 @@ function imageProduit($id_produit)
 {
     global $bdd;
 
-    $imagesProduit = $bdd->prepare("SELECT nom_image AS nom FROM images WHERE id_produit = :id_produit ORDER BY id_image ASC");
+    $imagesProduit = $bdd->prepare("SELECT nom_image FROM images WHERE id_produit = :id_produit ORDER BY id_image ASC");
     $imagesProduit->bindParam(":id_produit", $id_produit);
     $imagesProduit->execute();
 
-    return $imagesProduit->fetchAll(PDO::FETCH_ASSOC);
+    return $imagesProduit;
+}
+
+function ajouterImageProduit($images)
+{
+    global $bdd;
+    $id_produit = maxIdProduit();
+
+    for ($i = 0; $i < count($images["name"]); $i++) {
+
+        $nom = $images["name"][$i];
+        $origine = $images["tmp_name"][$i];
+
+        $destination = "../images/" . $nom;
+        move_uploaded_file($origine, $destination);
+        var_dump($nom, $origine, $destination);
+
+        $insert_image = $bdd->prepare("INSERT INTO images(nom_image, id_produit) VALUES (:nom_image, :id_produit)");
+        $insert_image->bindParam(":nom_image", $nom);
+        $insert_image->bindParam(":id_produit", $id_produit);
+        $insert_image->execute();
+    }
+    // header("Location: /pages/back_produits.php");
 }

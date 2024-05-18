@@ -149,6 +149,7 @@ function nouveauStock($quantite, $id_produit)
     }
 }
 
+// Récupère le max(id) de la table produits
 function maxIdProduit()
 {
     global $bdd;
@@ -159,13 +160,17 @@ function maxIdProduit()
     return $id;
 }
 
+// Ajouter un produit dans la table 
 function ajouterProduit($id_categorie, $nom, $description, $prix, $piece, $stock, $materiaux, $nomImage, $origineImage)
 {
     global $bdd;
 
-
     $id_produit = maxIdProduit();
     $id_produit++;
+
+    $ordre = maxOrdreProduit();
+    $ordre++;
+    $isActive = 0;
 
     $verification = $bdd->prepare("SELECT * FROM produits WHERE nom = :nom");
     $verification->bindParam(":nom", $nom);
@@ -178,7 +183,7 @@ function ajouterProduit($id_categorie, $nom, $description, $prix, $piece, $stock
 
         $name = "/images/" . $nomImage;
 
-        $add = $bdd->prepare("INSERT INTO produits(id_produit, nom, description, prix, piece, stock, categorie, image_produit) VALUES (:id_prod, :nom, :desc, :prix, :piece, :stock, :categ, :img)");
+        $add = $bdd->prepare("INSERT INTO produits(id_produit, nom, description, prix, piece, stock, categorie, image_produit, ordre, isActive) VALUES (:id_prod, :nom, :desc, :prix, :piece, :stock, :categ, :img, :ordre, :isActive)");
         $add->bindParam(":id_prod", $id_produit);
         $add->bindParam(":nom", $nom);
         $add->bindParam(":desc", $description);
@@ -187,6 +192,8 @@ function ajouterProduit($id_categorie, $nom, $description, $prix, $piece, $stock
         $add->bindParam(":stock", $stock);
         $add->bindParam(":categ", $id_categorie);
         $add->bindParam(":img", $name);
+        $add->bindParam(":ordre", $ordre);
+        $add->bindParam(":isActive", $isActive);
         $add->execute();
 
         foreach ($materiaux as $mat) {
@@ -203,4 +210,35 @@ function ajouterProduit($id_categorie, $nom, $description, $prix, $piece, $stock
 
         echo "Un produit possède déjà ce nom, veuillez changer";
     }
+}
+
+function produitActif($id_produit)
+{
+    global $bdd;
+
+    foreach ($id_produit as $id) {
+        $produitMisEnAvant = $bdd->prepare("UPDATE produits SET isActive = 1 WHERE id_produit = :id_produit");
+        $produitMisEnAvant->bindParam(":id_produit", $id);
+        $produitMisEnAvant->execute();
+    }
+    header("Location: /pages/accueil.php");
+}
+
+function produitCarrousel()
+{
+    global $bdd;
+
+    $produitCarrousel = $bdd->query("SELECT * FROM produits WHERE isActive = 1");
+    $prodCar = $produitCarrousel->fetchAll(PDO::FETCH_ASSOC);
+
+    return $prodCar;
+}
+
+function maxOrdreProduit()
+{
+    global $bdd;
+
+    $max_ordre = $bdd->query("SELECT MAX(ordre) FROM produits");
+    $ordre = $max_ordre->fetchColumn();
+    return $ordre;
 }

@@ -1,10 +1,10 @@
 <?php
 
 require_once '../controller/controller_categorie.php';
+require_once '../controller/controller_produit.php';
 $categories = categorieAccueil();
 
-$imageSelect = $bdd->query("SELECT nom_image AS nom FROM images ORDER BY id_image ASC");
-$images = $imageSelect->fetchAll(PDO::FETCH_ASSOC);
+$images = produitCarrousel();
 
 ?>
 <!DOCTYPE html>
@@ -27,11 +27,13 @@ $images = $imageSelect->fetchAll(PDO::FETCH_ASSOC);
 
     <div style="margin-right: 10%; margin-left: 10%;" class="d-flex justify-content-center m-4">
         <div class="col-10">
-            <?php include 'misc/carrousel.php' ?>
+            <?php include 'misc/carrousel_accueil.php' ?>
         </div>
     </div>
-
-
+    <div class="text-center m-4">
+        <h3 class="m-0">Venant des hautes terres d'écosse</h3>
+        <h3>Nos meubles sont immortels</h3>
+    </div>
     <h2 class="text-center">CATEGORIES</h2>
     <div class="row justify-content-center m-4">
 

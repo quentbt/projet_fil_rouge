@@ -55,25 +55,34 @@ $produits = allProduit();
                 </tbody>
             </table>
             <div class="text-end">
+                <button type="submit" name="produit_carrousel_accueil" class="btn btn-primary" disabled>Mettre ces produits en avant</button>
                 <button id="bouton-supprimer" type="submit" class="btn btn-danger" name="bouton_supprimer_produit" disabled>Supprimer</button>
             </div>
         </form>
     </div>
 
     <script>
-        var checkboxTout = document.getElementById("tout");
-
+        var boutonCarrousel = document.querySelector("button[name='produit_carrousel_accueil']");
         var checkboxesProduits = document.querySelectorAll("input[name='id_produit[]']");
 
-        // Ajouter un écouteur d'événement de clic à la case à cocher "tout"
-        checkboxTout.addEventListener("click", function() {
-            // Parcourir toutes les cases à cocher des produits
+        function updateButtons() {
+            var count = 0;
             checkboxesProduits.forEach(function(checkbox) {
-                // Cocher ou décocher en fonction de l'état de la case à cocher "tout"
-                checkbox.checked = checkboxTout.checked;
+                if (checkbox.checked) {
+                    count++;
+                }
             });
+
+            boutonCarrousel.disabled = count !== 3;
+        }
+
+        checkboxesProduits.forEach(function(checkbox) {
+            checkbox.addEventListener("change", updateButtons);
         });
+
+        updateButtons();
     </script>
+
     <script>
         var boutonSupprimer = document.getElementById("bouton-supprimer");
 

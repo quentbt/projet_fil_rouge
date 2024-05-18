@@ -41,7 +41,7 @@ $quantite = quantite($id_produit);
     <div class="row mt-4">
 
         <div class="col-6">
-            <?php include 'misc/carrousel.php' ?>
+            <?php include 'misc/carrousel_image.php' ?>
         </div>
 
         <div class="col-6 mb-4">
