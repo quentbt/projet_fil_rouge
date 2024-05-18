@@ -51,5 +51,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $origineImage = $_FILES["image"]["tmp_name"];
 
         ajouterProduit($categ, $nom, $desc, $prix, $piece, $stock, $materiaux, $nomImage, $origineImage);
+    } elseif (isset($_POST["id_produit"]) && isset($_POST["id_panier"])) {
+
+        var_dump($_POST);
+        $id_produit = $_POST["id_produit"];
+        $id_panier = $_POST["id_panier"];
+
+        deleteProduitPanier($id_produit, $id_panier);
     }
 }

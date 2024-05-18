@@ -22,6 +22,7 @@ $tva = $prixTotal * (20 / 100);
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link rel="stylesheet" href="css_files/panier.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <title>Panier</title>
 </head>
 
@@ -30,7 +31,7 @@ $tva = $prixTotal * (20 / 100);
 
     <div class="row center">
         <form action="../controller/controller_formulaire.php" method="POST" class="d-flex justify-content-between">
-            <input type="hidden" name="id_panier" value="<?= $id_panier ?>">
+            <input type="hidden" name="id_panier" id="id_panier" value="<?= $id_panier ?>">
             <input type="hidden" name="id_client" value="<?= $id_client ?>">
             <div class="col-5">
                 <?php foreach ($panier as $pan) {
@@ -48,14 +49,14 @@ $tva = $prixTotal * (20 / 100);
                         </div>
                         <div class="col-2 text-center d-flex flex-column align-items-end">
                             <p><?= $pan["prix"] ?>€</p>
-                            <input type="hidden" name="id_produit[]" value="<?= $pan["id_produit"] ?>">
+                            <input type="hidden" name="id_produit[]" id="id_produit" value="<?= $pan["id_produit"] ?>">
                             <select name="quantite[]" id="qtt">
                                 <?php foreach ($quantite as $qtt) { ?>
                                     <option value="<?= "$qtt" ?>" <?= ($qtt === $pan["quantite"]) ? "selected" : "" ?>><?= $qtt ?></option>
                                 <?php } ?>
                             </select>
                             <br>
-                            <button class="bouton_suppr" type="button" name="bouton_suppr_produit_panier">
+                            <button class="bouton_suppr_produit_panier" type="button" data-id_produit="<?= $pan["id_produit"] ?>" data-id_panier="<?= $id_panier ?>" name="bouton_suppr_produit_panier">
                                 <span class="material-symbols-outlined">
                                     delete
                                 </span>
@@ -77,6 +78,37 @@ $tva = $prixTotal * (20 / 100);
             </div>
         </form>
     </div>
+    <script>
+        $(document).ready(function() {
+            $(".bouton_suppr_produit_panier").click(function(e) {
+                e.preventDefault();
+
+                // Récupérez l'ID du produit que vous souhaitez supprimer ainsi que l'id du panier
+                var id_produit = $(this).data("id_produit");
+                var id_panier = $(this).data("id_panier");
+
+                console.log("Button clicked!")
+                console.log('id_produit:', id_produit);
+                console.log('id_panier:', id_panier);
+
+                $.ajax({
+                    url: '/controller/controller_formulaire.php',
+                    type: 'post',
+                    data: {
+                        'id_produit': id_produit,
+                        'id_panier': id_panier
+                    },
+                    success: function(result) {
+                        console.log('Success', result);
+                        window.location.href = "/pages/panier.php";
+                    },
+                    error: function(err) {
+                        console.log("Error: ", err);
+                    },
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>

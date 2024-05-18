@@ -36,7 +36,7 @@ img {
     height: 50px;
 }
 
-.bouton_suppr {
+.bouton_suppr_produit_panier {
 
     background-color: white;
     border: none;
@@ -48,7 +48,7 @@ img {
     margin-bottom: 1rem;
 }
 
-.bouton_suppr:hover {
+.bouton_suppr_produit_panier:hover {
 
     background-color: lightgray;
 }

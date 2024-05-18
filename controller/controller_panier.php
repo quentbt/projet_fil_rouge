@@ -105,3 +105,16 @@ function PanierValide($id_panier, $id_client)
     createPanier($id_client);
     header("Location: /pages/accueil.php");
 }
+
+function deleteProduitPanier($id_produit, $id_panier)
+{
+
+    global $bdd;
+
+    $deleteproduit = $bdd->prepare("DELETE FROM panier_produit WHERE id_produit = :id_produit AND id_panier = :id_panier");
+    $deleteproduit->bindParam(":id_produit", $id_produit);
+    $deleteproduit->bindParam(":id_panier", $id_panier);
+    $deleteproduit->execute();
+
+    header("Location: /pages/panier.php");
+}
