@@ -60,9 +60,10 @@ function graphVenteCategorie($semaine)
 
     $filename = $_SERVER['DOCUMENT_ROOT'] . '/images/graph/graphVenteParCategorie.png';
     $minDate = date('Y-m-d', strtotime("-$semaine weeks"));
-    var_dump($minDate);
 
-    $dataHist = $bdd->query("SELECT c.categorie, COUNT(*) as nombre FROM historique h JOIN panier_produit p_pr ON h.id_panier = p_pr.id_panier JOIN produits pr ON p_pr.id_produit = pr.id_produit JOIN categories c ON pr.categorie = c.id_categorie GROUP BY pr.categorie ORDER BY pr.categorie;");
+    $dataHist = $bdd->prepare("SELECT c.categorie, COUNT(*) as nombre FROM historique h JOIN panier_produit p_pr ON h.id_panier = p_pr.id_panier JOIN produits pr ON p_pr.id_produit = pr.id_produit JOIN categories c ON pr.categorie = c.id_categorie WHERE h.date_achat >= :min_date GROUP BY pr.categorie ORDER BY pr.categorie;");
+    $dataHist->bindParam(":min_date", $minDate);
+    $dataHist->execute();
 
     $data = array();
     $label = array();

@@ -18,31 +18,26 @@ include "../controller/controller_graph.php"
 <body>
 
     <div class="row m-4">
-        <div class="col-6">
+        <div class="col-4">
             <img src="/images/graph/graphVenteParTemps.png" alt="">
-
             <form action="../controller/controller_formulaire.php" method="POST">
-
                 <label for="customRange1" class="form-label">Choisissez le nombre de semaine : <span id="rangeValueBar">1</span></label>
-                <input type="range" class="form-range" id="semaineBar" name="semaineBar" min="1" max="5" step="1" oninput="updateValue(this.value)" value="1">
+                <input type="range" class="form-range" id="semaineBar" name="semaineBar" min="1" max="5" step="1" oninput="updateValue(this.value, 'rangeValueBar')" value="1">
                 <button type="submit" name="graphVenteSemaine" class="btn btn-primary">Choisir</button>
             </form>
         </div>
         <div class="col-4">
             <img src="/images/graph/graphVenteParCategorie.png" alt="">
-
             <form action="../controller/controller_formulaire.php" method="POST">
-
                 <label for="customRange1" class="form-label">Choisissez le nombre de semaine : <span id="rangeValuePie">1</span></label>
-                <input type="range" class="form-range" id="semainePie" name="semainePie" min="1" max="5" step="1" oninput="updateValue(this.value)" value="1">
+                <input type="range" class="form-range" id="semainePie" name="semainePie" min="1" max="5" step="1" oninput="updateValue(this.value, 'rangeValuePie')" value="1">
                 <button type="submit" name="graphVenteCategorie" class="btn btn-primary">Choisir</button>
             </form>
         </div>
     </div>
     <script>
-        function updateValue(val) {
-            document.getElementById('rangeValueBar').innerText = val;
-            document.getElementById('rangeValuePie').innerText = val;
+        function updateValue(val, id) {
+            document.getElementById(id).innerText = val;
         }
     </script>
 </body>
