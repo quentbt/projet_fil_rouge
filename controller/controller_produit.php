@@ -66,7 +66,7 @@ function produitSimilaire($id_produit)
 {
     global $bdd;
 
-    $produitSimilaire = $bdd->prepare("SELECT id_produit, nom FROM produits WHERE categorie = (SELECT categorie FROM produits WHERE id_produit = :id_produit) AND id_produit != :id_produit AND stock > 0 ORDER BY RAND() LIMIT 6");
+    $produitSimilaire = $bdd->prepare("SELECT id_produit, nom, image_produit FROM produits WHERE categorie = (SELECT categorie FROM produits WHERE id_produit = :id_produit) AND id_produit != :id_produit AND stock > 0 ORDER BY RAND() LIMIT 6");
     $produitSimilaire->bindParam(":id_produit", $id_produit);
     $produitSimilaire->execute();
 
@@ -83,6 +83,10 @@ function deleteProduit($id_produit)
         $deleteProduit = $bdd->prepare("DELETE FROM produits WHERE id_produit = :id_produit");
         $deleteProduit->bindParam(":id_produit", $id);
         $deleteProduit->execute();
+
+        $deleteMatProd = $bdd->prepare("DELETE FROM prod_mat WHERE id_produit = :id_produit");
+        $deleteMatProd->bindParam(":id_produit", $id);
+        $deleteMatProd->execute();
     }
     header("Location: /pages/back_produits.php");
 }
@@ -215,6 +219,8 @@ function ajouterProduit($id_categorie, $nom, $description, $prix, $piece, $stock
 function produitActif($id_produit)
 {
     global $bdd;
+
+    $bdd->exec("UPDATE produits SET isActive = 0");
 
     foreach ($id_produit as $id) {
         $produitMisEnAvant = $bdd->prepare("UPDATE produits SET isActive = 1 WHERE id_produit = :id_produit");

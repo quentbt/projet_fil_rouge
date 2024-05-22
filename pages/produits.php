@@ -100,8 +100,8 @@ $quantite = quantite($id_produit);
 
         <?php foreach ($produitSimil as $product) { ?>
             <div class="col-3 m-3">
-                <a href="/pages/produits/produits.php?id_produit=<?= $product["id_produit"] ?>" class="card">
-                    <img src="/images/<?= $product["premiere_image"] ?>" alt="">
+                <a href="/pages/produits.php?id_produit=<?= $product["id_produit"] ?>" class="card">
+                    <img src="<?= $product["image_produit"] ?>" alt="">
                     <h2 class="product-name"><?= $product["nom"] ?></h2>
                 </a>
             </div>

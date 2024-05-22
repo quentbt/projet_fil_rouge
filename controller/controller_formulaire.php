@@ -3,6 +3,7 @@ require_once 'controller_categorie.php';
 require_once 'controller_produit.php';
 require_once 'controller_panier.php';
 require_once 'controller_image.php';
+require_once 'controller_graph.php';
 
 // Tous les formulaires arrivent sur cette page, des méthodes sont exécutés en fonction des boutons envoyés.
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -68,5 +69,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $id_produit = $_POST["id_produit"];
         produitActif($id_produit);
+    } elseif (isset($_POST["graphVenteSemaine"])) {
+
+        $nbrSemaine = $_POST["semaineBar"];
+        graphVenteParTemps($nbrSemaine);
+    } elseif (isset($_POST["graphVenteCategorie"])) {
+
+        $nbrSemaine = $_POST["semainePie"];
+        graphVenteCategorie($nbrSemaine);
     }
 }

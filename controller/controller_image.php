@@ -32,7 +32,7 @@ function imageProduit($id_produit)
 {
     global $bdd;
 
-    $imagesProduit = $bdd->prepare("SELECT nom_image FROM images WHERE id_produit = :id_produit ORDER BY id_image ASC");
+    $imagesProduit = $bdd->prepare("SELECT * FROM images WHERE id_produit = :id_produit ORDER BY id_image ASC");
     $imagesProduit->bindParam(":id_produit", $id_produit);
     $imagesProduit->execute();
 

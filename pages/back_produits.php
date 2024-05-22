@@ -2,6 +2,8 @@
 
 require_once "../controller/controller_produit.php";
 $produits = allProduit();
+
+// PAGE IMPOSSIBLE D'ACCES SI L'UTILISATEUR N'EST PAS ADMIN.
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -85,24 +87,38 @@ $produits = allProduit();
 
     <script>
         var boutonSupprimer = document.getElementById("bouton-supprimer");
+        var toutCheckbox = document.getElementById("tout");
 
-        checkboxesProduits.forEach(function(checkbox) {
-            checkbox.addEventListener("change", function() {
-                var auMoinsUneSelectionnee = false;
-                checkboxesProduits.forEach(function(checkbox) {
-                    if (checkbox.checked) {
-                        auMoinsUneSelectionnee = true;
-                    }
-                });
-
-                if (auMoinsUneSelectionnee) {
-                    boutonSupprimer.disabled = false;
-                } else {
-                    boutonSupprimer.disabled = true;
+        function updateButtons() {
+            var auMoinsUneSelectionnee = false;
+            checkboxesProduits.forEach(function(checkbox) {
+                if (checkbox.checked) {
+                    auMoinsUneSelectionnee = true;
                 }
             });
+
+            if (auMoinsUneSelectionnee) {
+                boutonSupprimer.disabled = false;
+            } else {
+                boutonSupprimer.disabled = true;
+            }
+        }
+
+        checkboxesProduits.forEach(function(checkbox) {
+            checkbox.addEventListener("change", updateButtons);
         });
+
+        toutCheckbox.addEventListener("change", function() {
+            var etatToutCheckbox = this.checked;
+            checkboxesProduits.forEach(function(checkbox) {
+                checkbox.checked = etatToutCheckbox;
+            });
+            updateButtons();
+        });
+
+        updateButtons();
     </script>
+
 
 </body>
 

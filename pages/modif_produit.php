@@ -1,13 +1,14 @@
 <?php
 require_once '../controller/controller_produit.php';
 require_once '../controller/controller_categorie.php';
+require_once '../controller/controller_image.php';
+
 
 $id_produit = $_GET["id_produit"];
 
 $produit = infoProduit($id_produit);
 
-$imageProduit = $bdd->query("SELECT * FROM images WHERE id_produit = $id_produit ORDER BY id_image ASC");
-$imgProduit = $imageProduit->fetchAll(PDO::FETCH_ASSOC);
+$imageProduit = imageProduit($id_produit);
 
 $categorie = allCategorie();
 
@@ -184,7 +185,7 @@ if (isset($_POST["modif_image"])) {
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($imgProduit as $img) { ?>
+                <?php foreach ($imageProduit as $img) { ?>
                     <tr>
                         <!-- <td class="text-center"><?= $index ?></td> -->
                         <th scope="row">
