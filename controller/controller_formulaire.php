@@ -73,9 +73,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $nbrSemaine = $_POST["semaineBar"];
         graphVenteParTemps($nbrSemaine);
-    } elseif (isset($_POST["graphVenteCategorie"])) {
-
-        $nbrSemaine = $_POST["semainePie"];
-        graphVenteCategorie($nbrSemaine);
+        header("Location: /pages/test_graph.php");
     }
+    // elseif (isset($_POST["graphVenteCategorie"])) {
+
+    //     $nbrSemaine = $_POST["semainePie"];
+    //     // graphVenteCategorie($nbrSemaine);
+    // }
 }
