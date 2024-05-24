@@ -3,7 +3,7 @@ require_once 'controller_categorie.php';
 require_once 'controller_produit.php';
 require_once 'controller_panier.php';
 require_once 'controller_image.php';
-require_once 'controller_graph.php';
+require_once 'controller_client.php';
 
 // Tous les formulaires arrivent sur cette page, des méthodes sont exécutés en fonction des boutons envoyés.
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -69,15 +69,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $id_produit = $_POST["id_produit"];
         produitActif($id_produit);
-    } elseif (isset($_POST["graphVenteSemaine"])) {
+    } elseif (isset($_POST["bouton_supprimer_client"])) {
 
-        $nbrSemaine = $_POST["semaineBar"];
-        graphVenteParTemps($nbrSemaine);
-        header("Location: /pages/test_graph.php");
+        $id_client = $_POST["id_client"];
+        $id_panier = panierClient($id_client);
+
+        if (isset($id_panier) && !empty($id_panier)) {
+            deleteHistorique($id_panier);
+            deletePanierProduit($id_panier);
+            deletePanier($id_client);
+        }
+        deleteUser($id_client);
     }
-    // elseif (isset($_POST["graphVenteCategorie"])) {
-
-    //     $nbrSemaine = $_POST["semainePie"];
-    //     // graphVenteCategorie($nbrSemaine);
-    // }
 }

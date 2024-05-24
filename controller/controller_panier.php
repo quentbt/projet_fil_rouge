@@ -106,6 +106,7 @@ function PanierValide($id_panier, $id_client)
     header("Location: /pages/accueil.php");
 }
 
+// Supprime un produit du panier.
 function deleteProduitPanier($id_produit, $id_panier)
 {
 
@@ -117,4 +118,63 @@ function deleteProduitPanier($id_produit, $id_panier)
     $deleteproduit->execute();
 
     header("Location: /pages/panier.php");
+}
+
+// Récupère tous les paniers d'un client
+function panierClient($id_clients)
+{
+    global $bdd;
+
+    foreach ($id_clients as $id) {
+
+        $panierClient = $bdd->prepare("SELECT id_panier FROM panier WHERE id_client = :id_client");
+        $panierClient->bindParam(":id_client", $id);
+        $panierClient->execute();
+
+        $panier = $panierClient->fetchALL(PDO::FETCH_ASSOC);
+    }
+
+    return $panier;
+}
+
+// Supprimer tous les paniers d'un client
+function deletePanier($id_client)
+{
+    global $bdd;
+
+    foreach ($id_client as $id) {
+
+        $deletePanier = $bdd->prepare("DELETE FROM panier WHERE id_client = :id_client");
+        $deletePanier->bindParam(":id_client", $id);
+        $deletePanier->execute();
+    }
+}
+
+// Supprimer toutes les commandes d'un client
+function deletePanierProduit($id_panier)
+{
+    global $bdd;
+
+    foreach ($id_panier as $id_pan) {
+
+        $id = $id_pan["id_panier"];
+
+        $deletePanierProduit = $bdd->prepare("DELETE FROM panier_produit WHERE id_panier = :id_panier");
+        $deletePanierProduit->bindParam(":id_panier", $id);
+        $deletePanierProduit->execute();
+    }
+}
+
+function deleteHistorique($id_panier)
+{
+    global $bdd;
+
+    foreach ($id_panier as $id_pan) {
+
+        $id = $id_pan["id_panier"];
+
+        $deleteHistorique = $bdd->prepare("DELETE FROM historique WHERE id_panier = :id_panier");
+        $deleteHistorique->bindParam(":id_panier", $id);
+        $deleteHistorique->execute();
+    }
 }
