@@ -63,44 +63,13 @@ $users = allUser();
     </div>
 
     <script>
-        var boutonCarrousel = document.querySelector("button[name='produit_carrousel_accueil']");
-        var checkboxesProduits = document.querySelectorAll("input[name='id_client[]']");
-
-        function updateButtons() {
-            var count = 0;
-            checkboxesProduits.forEach(function(checkbox) {
-                if (checkbox.checked) {
-                    count++;
-                }
-            });
-
-            boutonCarrousel.disabled = count !== 3;
-        }
-
-        checkboxesProduits.forEach(function(checkbox) {
-            checkbox.addEventListener("change", updateButtons);
-        });
-
-        updateButtons();
-    </script>
-
-    <script>
-        var boutonSupprimer = document.getElementById("bouton-supprimer");
         var toutCheckbox = document.getElementById("tout");
+        var checkboxesProduits = document.querySelectorAll("input[name='id_client[]']");
+        var boutonSupprimer = document.getElementById("bouton-supprimer");
 
         function updateButtons() {
-            var auMoinsUneSelectionnee = false;
-            checkboxesProduits.forEach(function(checkbox) {
-                if (checkbox.checked) {
-                    auMoinsUneSelectionnee = true;
-                }
-            });
-
-            if (auMoinsUneSelectionnee) {
-                boutonSupprimer.disabled = false;
-            } else {
-                boutonSupprimer.disabled = true;
-            }
+            var auMoinsUneSelectionnee = Array.from(checkboxesProduits).some(checkbox => checkbox.checked);
+            boutonSupprimer.disabled = !auMoinsUneSelectionnee;
         }
 
         checkboxesProduits.forEach(function(checkbox) {
@@ -117,7 +86,6 @@ $users = allUser();
 
         updateButtons();
     </script>
-
 
 </body>
 
