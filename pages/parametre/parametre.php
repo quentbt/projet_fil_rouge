@@ -114,8 +114,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="col-6">
                     <label for="nom">Email :</label>
                     <div class="input-wrapper">
-                        <input type="text" class="input_text" name="mail" <?php if (empty($user["email"])) { ?> placeholder="Email non renseigné" <?php } else { ?> value="<?= $user["email"] ?>" <?php } ?>disabled>
-
+                        <input type="text" class="input_text" name="mail" <?php if (empty($user["email"])) { ?> placeholder="Email non renseigné" <?php } else { ?> value="<?= $user["email"] ?>" disabled <?php } ?>>
                     </div>
                 </div>
             </div>

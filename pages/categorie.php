@@ -3,8 +3,11 @@ require_once '../controller/controller_produit.php';
 require_once '../controller/controller_image.php';
 
 $categ = $_GET["categorie"];
+$pages = isset($_GET['page']) ? $_GET['page'] : 1;
+$limite = 5;
 
-$produits = produitCategorie($categ);
+$produits = produitCategorie($categ, $pages, $limite);
+$nbr_produit = ceil(nombreProduitParCategorie($categ) / $limite);
 
 $image = imageCategorie($categ);
 ?>
@@ -22,7 +25,7 @@ $image = imageCategorie($categ);
 
 <body>
     <div>
-        <img src="<?= $image ?>" alt="">
+        <img src="<?= $image ?>" alt="image de la catégorie">
     </div>
     <br>
     <div class="row justify-content-center m-4">
@@ -31,7 +34,7 @@ $image = imageCategorie($categ);
         ?>
             <div class="col-3 m-3">
                 <a href="/pages/produits.php?id_produit=<?= $produit['id_produit'] ?>" class="card">
-                    <img src="<?= $produit["image_produit"] ?>" alt="">
+                    <img src="<?= $produit["image_produit"] ?>" alt="image du produit">
                 </a>
                 <div style="width: 20rem; height: fit-content;" class="d-flex justify-content-between">
                     <span><?= $produit["nom"] ?></span>
@@ -39,6 +42,21 @@ $image = imageCategorie($categ);
                 </div>
             </div>
         <?php } ?>
+    </div>
+    <div class="d-flex justify-content-center">
+        <ul class="pagination">
+            <li class="page-item <?= $pages == 1 ? 'disabled' : '' ?>">
+                <a class="page-link" href="/pages/categorie.php?categorie=<?= $categ ?>&page=1">&laquo;</a>
+            </li>
+            <?php for ($i = 1; $i <= $nbr_produit; $i++) { ?>
+                <li class="page-item <?= $pages == $i ? 'active' : '' ?>">
+                    <a class="page-link" href="/pages/categorie.php?categorie=<?= $categ ?>&page=<?= $i ?>"><?= $i ?></a>
+                </li>
+            <?php } ?>
+            <li class="page-item <?= $pages == $nbr_produit ? 'disabled' : '' ?>">
+                <a class="page-link" href="/pages/categorie.php?categorie=<?= $categ ?>&page=<?= $nbr_produit ?>">&raquo;</a>
+            </li>
+        </ul>
     </div>
 </body>
 

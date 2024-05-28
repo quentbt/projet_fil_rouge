@@ -13,17 +13,34 @@ function allProduit()
 
     return $resultat;
 }
-
-// Permet d'obtenir tous les produits pour 1 catégorie
-function produitCategorie($categorie)
+function nombreProduitParCategorie($categorie)
 {
     global $bdd;
 
-    $produitCateg = $bdd->prepare("SELECT * FROM produits WHERE produits.categorie = (SELECT id_categorie FROM categories WHERE categorie = :categ)");
+    $nbrProduit = $bdd->prepare("SELECT COUNT(id_produit) as nbr_produit FROM produits WHERE produits.categorie = (SELECT id_categorie FROM categories WHERE categorie = :categ)");
+    $nbrProduit->bindParam(":categ", $categorie, PDO::PARAM_STR);
+    $nbrProduit->execute();
+    $produits = $nbrProduit->fetchColumn();
+
+    return $produits;
+}
+
+// Permet d'obtenir tous les produits pour 1 catégorie
+function produitCategorie($categorie, $pages, $limite)
+{
+    global $bdd;
+
+    $depart = ($pages - 1) * $limite;
+
+    $produitCateg = $bdd->prepare("SELECT * FROM produits WHERE produits.categorie = (SELECT id_categorie FROM categories WHERE categorie = :categ) LIMIT :depart, :limite");
     $produitCateg->bindParam(":categ", $categorie);
+    $produitCateg->bindParam(":depart", $depart, PDO::PARAM_INT);
+    $produitCateg->bindParam(":limite", $limite, PDO::PARAM_INT);
     $produitCateg->execute();
 
-    return $produitCateg;
+    $produits = $produitCateg->fetchAll(PDO::FETCH_ASSOC);
+
+    return $produits;
 }
 
 // Permet d'obtenir toutes les infos d'un produit

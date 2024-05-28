@@ -93,13 +93,26 @@ function prixQtt($id_panier)
     return $prixFinal += $tva;
 }
 
+function updateQuantiteProduit($id_produit, $id_panier, $quantite)
+{
+    global $bdd;
+
+    $modifQtt = $bdd->prepare("UPDATE panier_produit SET quantite = :quantite WHERE id_panier = :id_panier AND id_produit = :id_produit");
+    $modifQtt->bindParam(":quantite", $quantite);
+    $modifQtt->bindParam(":id_panier", $id_panier);
+    $modifQtt->bindParam(":id_produit", $id_produit);
+    $modifQtt->execute();
+}
+
 // Permet de validé une commande, créer un nouveau panier qui permet de remettre la page panier.php blanche
 function PanierValide($id_panier, $id_client)
 {
     global $bdd;
+    $cout_total = prixQtt($id_panier);
 
-    $insertHist = $bdd->prepare("INSERT INTO historique(id_panier, date_achat) VALUES (:id_panier, NOW())");
+    $insertHist = $bdd->prepare("INSERT INTO historique(id_panier, date_achat, cout_total) VALUES (:id_panier, NOW(), :cout_total)");
     $insertHist->bindParam(":id_panier", $id_panier);
+    $insertHist->bindParam(":cout_total", $cout_total);
     $insertHist->execute();
 
     createPanier($id_client);
@@ -165,6 +178,7 @@ function deletePanierProduit($id_panier)
     }
 }
 
+// Supprime les commandes passé par un client
 function deleteHistorique($id_panier)
 {
     global $bdd;
@@ -177,4 +191,17 @@ function deleteHistorique($id_panier)
         $deleteHistorique->bindParam(":id_panier", $id);
         $deleteHistorique->execute();
     }
+}
+
+// Séléctionne les produits d'une commande
+function produitCommande($id_panier)
+{
+    global $bdd;
+
+    $produitCommande = $bdd->prepare("SELECT p.*, pp.quantite  FROM produits p JOIN panier_produit pp ON pp.id_produit = p.id_produit WHERE id_panier = :id_panier");
+    $produitCommande->bindParam(":id_panier", $id_panier);
+    $produitCommande->execute();
+
+    $panier = $produitCommande->fetchAll(PDO::FETCH_ASSOC);
+    return $panier;
 }

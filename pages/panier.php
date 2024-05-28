@@ -9,7 +9,7 @@ $id_client = 1;
 $panier = affichePanier($id_client);
 $id_panier = maxPanierId($id_client);
 $prixTotal = prixQtt($id_panier);
-$tva = $prixTotal * (20 / 100);
+$tva = 0;
 
 ?>
 <!DOCTYPE html>
@@ -43,14 +43,14 @@ $tva = $prixTotal * (20 / 100);
                             <img src="<?= $pan["image_produit"] ?>" alt="">
                         </div>
                         <div class="col-7 ml-4">
-                            <?= $pan["nom"] ?>
+                            <p class="h2"><?= $pan["nom"] ?></p>
                             <br>
-                            <?= $pan["description"] ?>
+                            <p class="text-truncate"><?= $pan["description"] ?></p>
                         </div>
                         <div class="col-2 text-center d-flex flex-column align-items-end">
-                            <p><?= $pan["prix"] ?>€</p>
+                            <p class="h3"><?= $pan["prix"] ?>€</p>
                             <input type="hidden" name="id_produit[]" id="id_produit" value="<?= $pan["id_produit"] ?>">
-                            <select name="quantite[]" id="qtt">
+                            <select class="select_quantite" name="quantite_panier[]" id="qtt" data-id_produit="<?= $pan["id_produit"] ?>" data-id_panier="<?= $id_panier ?>">
                                 <?php foreach ($quantite as $qtt) { ?>
                                     <option value="<?= "$qtt" ?>" <?= ($qtt === $pan["quantite"]) ? "selected" : "" ?>><?= $qtt ?></option>
                                 <?php } ?>
@@ -63,7 +63,9 @@ $tva = $prixTotal * (20 / 100);
                             </button>
                         </div>
                     </div>
-                <?php } ?>
+                <?php
+                    $tva += ($pan["prix"] * $pan["quantite"]) * (20 / 100);
+                } ?>
             </div>
             <div class="col-5">
                 <div class="row">
@@ -87,7 +89,6 @@ $tva = $prixTotal * (20 / 100);
                 var id_produit = $(this).data("id_produit");
                 var id_panier = $(this).data("id_panier");
 
-                console.log("Button clicked!")
                 console.log('id_produit:', id_produit);
                 console.log('id_panier:', id_panier);
 
@@ -105,6 +106,32 @@ $tva = $prixTotal * (20 / 100);
                     error: function(err) {
                         console.log("Error: ", err);
                     },
+                });
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#qtt').change(function() {
+                var newQuantity = $(this).val();
+                var id_produit = $(this).data("id_produit");
+                var id_panier = $(this).data("id_panier");
+
+                console.log(newQuantity, id_produit, id_panier)
+                $.ajax({
+                    url: '/controller/controller_formulaire.php',
+                    type: 'POST',
+                    data: {
+                        quantity: newQuantity,
+                        id_produit: id_produit,
+                        id_panier: id_panier
+                    },
+                    success: function(data) {
+                        alert('La quantité a été mise à jour avec succès !');
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        alert('Une erreur est survenue lors de la mise à jour de la quantité : ' + textStatus + ' ' + errorThrown);
+                    }
                 });
             });
         });

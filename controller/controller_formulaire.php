@@ -27,12 +27,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $quantite = $_POST["quantite"];
 
         insertPanier($id_produit, $quantite, $id_client);
+    } elseif (isset($_POST['quantity'])) {
+
+        $id_produit = $_POST["id_produit"];
+        $id_panier = $_POST["id_panier"];
+        $quantite = $_POST["quantity"];
+
+        updateQuantiteProduit($id_produit, $id_panier, $quantite);
     } elseif (isset($_POST["produits_acheter"])) {
 
         $id_panier = $_POST["id_panier"];
         $id_client = $_POST["id_client"];
         $id_produit = $_POST["id_produit"];
-        $quantite = $_POST["quantite"];
+        $quantite = $_POST["quantite_panier"];
 
         nouveauStock($quantite, $id_produit);
         PanierValide($id_panier, $id_client);
