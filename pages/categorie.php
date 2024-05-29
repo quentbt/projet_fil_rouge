@@ -24,9 +24,12 @@ $image = imageCategorie($categ);
 </head>
 
 <body>
-    <div>
+    <div class="d-flex justify-content-center">
         <img src="<?= $image ?>" alt="image de la catégorie">
     </div>
+    <br>
+    <br>
+    <p class="text-center">DESCRIPTION DESCRIPTION DESCRIPTION DESCRIPTION DESCRIPTION <br>DESCRIPTION DESCRIPTION DESCRIPTION DESCRIPTION DESCRIPTION DESCRIPTION</p>
     <br>
     <div class="row justify-content-center m-4">
 

@@ -34,7 +34,7 @@ function produitCategorie($categorie, $pages, $limite)
 
     $depart = ($pages - 1) * $limite;
 
-    $produitCateg = $bdd->prepare("SELECT * FROM produits WHERE produits.categorie = (SELECT id_categorie FROM categories WHERE categorie = :categ) LIMIT :depart, :limite");
+    $produitCateg = $bdd->prepare("SELECT * FROM produits WHERE produits.categorie = (SELECT id_categorie FROM categories WHERE categorie = :categ) ORDER BY highlander DESC, stock DESC LIMIT :depart, :limite");
     $produitCateg->bindParam(":categ", $categorie);
     $produitCateg->bindParam(":depart", $depart, PDO::PARAM_INT);
     $produitCateg->bindParam(":limite", $limite, PDO::PARAM_INT);

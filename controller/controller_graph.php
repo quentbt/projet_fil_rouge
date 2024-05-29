@@ -11,7 +11,7 @@ function graphVenteParTemps($semaine)
 
     if ($semaine > 1) {
 
-        $requete = $bdd->prepare("SELECT WEEK(date_achat) as date_achat,COUNT(id_historique) as nbr_achat FROM historique WHERE date_achat > DATE(NOW()) - INTERVAL :semaine WEEK GROUP BY WEEK(date_achat)");
+        $requete = $bdd->prepare("SELECT YEARWEEK(date_achat, 3) as date_achat,COUNT(id_historique) as nbr_achat FROM historique WHERE date_achat > DATE(NOW()) - INTERVAL :semaine WEEK GROUP BY YEARWEEK(date_achat, 3)");
         $requete->bindParam(":semaine", $semaine);
         $requete->execute();
     } else {
@@ -23,15 +23,15 @@ function graphVenteParTemps($semaine)
     $nbr_achat = array();
     $dates = array();
 
-    $year = date('Y');
-
     foreach ($resultat as $result) {
 
         $nbr_achat[] = $result['nbr_achat'];
 
         if ($semaine > 1) {
 
-            $startOfWeek = strtotime($year . "W" . str_pad($result["date_achat"], 2, '0', STR_PAD_LEFT));
+            $week = substr($result["date_achat"], -2);
+            $year = substr($result["date_achat"], 0, 4);
+            $startOfWeek = strtotime($year . "W" . str_pad($week, 2, '0', STR_PAD_LEFT));
             $endOfWeek = strtotime("+6 days", $startOfWeek);
             $premierJourSemaine =  date("d M Y", $startOfWeek);
             $dernierJourSemaine = date("d M Y", $endOfWeek);
@@ -50,6 +50,7 @@ function graphVenteParTemps($semaine)
 
     header("Location: /pages/test_graph.php");
 }
+
 
 function graphVenteParCategorie($semaine)
 {

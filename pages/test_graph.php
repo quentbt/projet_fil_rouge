@@ -34,8 +34,8 @@ $nbr_produit = graphVenteParCategorie($semainePie)["nbr_achat"];
 </head>
 
 <body>
-    <div class="row m-4">
-        <div class="col-4">
+    <div class="row m-4 d-flex justify-content-around">
+        <div class="col-5">
             <form method="POST">
                 <canvas id="myChart"></canvas>
                 <label for="customRange1" class="form-label">Choisissez le nombre de semaine : <span id="rangeValueBar">1</span></label>
@@ -43,14 +43,23 @@ $nbr_produit = graphVenteParCategorie($semainePie)["nbr_achat"];
                 <button type="submit" name="graphVenteSemaine" class="btn btn-primary">Choisir</button>
             </form>
         </div>
-        <div class="col-4">
+        <div class="col-5">
             <form method="POST">
-                <canvas id="myPieChart"></canvas>
-                <label for="customRange1" class="form-label">Choisissez le nombre de semaine : <span id="rangeValuePie">1</span></label>
+                <canvas id="myGroupBarChart"></canvas>
+                <label for="customRange1" class="form-label">Choisissez le nombre de semaine : <span id="rangeValueGroupBar">1</span></label>
                 <input type="range" class="form-range" id="semainePie" name="semainePie" min="1" max="5" step="1" oninput="updateValue(this.value, 'rangeValuePie')" value="1">
                 <button type="submit" name="graphVenteCategorie" class="btn btn-primary">Choisir</button>
             </form>
         </div>
+    </div>
+    <br><br>
+    <div class="d-flex justify-content-center">
+        <form method="POST">
+            <canvas id="myPieChart"></canvas>
+            <label for="customRange1" class="form-label">Choisissez le nombre de semaine : <span id="rangeValuePie">1</span></label>
+            <input type="range" class="form-range" id="semainePie" name="semainePie" min="1" max="5" step="1" oninput="updateValue(this.value, 'rangeValuePie')" value="1">
+            <button type="submit" name="graphVenteCategorie" class="btn btn-primary">Choisir</button>
+        </form>
     </div>
 
     <!-- BAR CHART -->
@@ -118,6 +127,36 @@ $nbr_produit = graphVenteParCategorie($semainePie)["nbr_achat"];
                     ],
                     hoverOffset: 4
                 }]
+            }
+        });
+    </script>
+    <!-- GROUP BAR CHART -->
+    <script>
+        let ctxGroup = document.getElementById('myGroupBarChart').getContext('2d');
+        let myGroupBarChart = new Chart(ctxGroup, {
+            type: 'bar',
+            data: {
+                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                datasets: [{
+                    label: '# of Votes',
+                    data: [12, 19, 3, 5, 2, 3],
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }, {
+                    label: '# of Points',
+                    data: [7, 11, 5, 8, 3, 7],
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
             }
         });
     </script>
