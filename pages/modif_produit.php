@@ -14,36 +14,37 @@ $categorie = allCategorie();
 
 $index = 1;
 
-if (isset($_POST["modif"])) {
+// if (isset($_POST["modif"])) {
 
-    if (isset($_POST["nom"]) && isset($_POST["desc"]) && isset($_POST["prix"]) && isset($_POST["stock"]) && isset($_POST["piece"])) {
+//     if (isset($_POST["nom"]) && isset($_POST["desc"]) && isset($_POST["prix"]) && isset($_POST["stock"]) && isset($_POST["piece"])) {
 
-        $nom = $_POST["nom"];
-        $desc = $_POST["desc"];
-        $prix = $_POST["prix"];
-        $stock = $_POST["stock"];
-        $piece = $_POST["piece"];
-        $img = str_replace("/images/", "", $_POST["img"]);
+//         $nom = $_POST["nom"];
+//         $desc = $_POST["desc"];
+//         $prix = $_POST["prix"];
+//         $stock = $_POST["stock"];
+//         $piece = $_POST["piece"];
+//         $img = str_replace("/images/", "", $_FILES["img"]);
+//         var_dump($nom, $desc, $prix, $stock, $piece, $img);
 
-        if (isset($_FILES["image"])) {
+//         if (isset($_FILES["image"])) {
 
-            $tmpName = $_FILES["image"]["tmp_name"];
-            $img = $_FILES["image"]["name"];
-            move_uploaded_file($tmpName, "../images/" . $img);
-        }
+//             $tmpName = $_FILES["image"]["tmp_name"];
+//             $img = $_FILES["image"]["name"];
+//             move_uploaded_file($tmpName, "../images/" . $img);
+//         }
 
-        $new_img_produit = $bdd->prepare("UPDATE produits SET nom = :nom, description = :desc, prix = :prix, stock = :stock, piece = :piece, image_produit = '/images/$img' WHERE id_produit = :id_produit");
-        $new_img_produit->bindParam(":id_produit", $id_produit);
-        $new_img_produit->bindParam(":nom", $nom);
-        $new_img_produit->bindParam(":desc", $desc);
-        $new_img_produit->bindParam(":prix", $prix);
-        $new_img_produit->bindParam(":stock", $stock);
-        $new_img_produit->bindParam(":piece", $piece);
-        $new_img_produit->execute();
+//         $new_img_produit = $bdd->prepare("UPDATE produits SET nom = :nom, description = :desc, prix = :prix, stock = :stock, piece = :piece, image_produit = '/images/$img' WHERE id_produit = :id_produit");
+//         $new_img_produit->bindParam(":id_produit", $id_produit);
+//         $new_img_produit->bindParam(":nom", $nom);
+//         $new_img_produit->bindParam(":desc", $desc);
+//         $new_img_produit->bindParam(":prix", $prix);
+//         $new_img_produit->bindParam(":stock", $stock);
+//         $new_img_produit->bindParam(":piece", $piece);
+//         // $new_img_produit->execute();
 
-        header("Location: /pages/backOffice/back_produits.php");
-    }
-}
+//         // header("Location: /pages/backOffice/back_produits.php");
+//     }
+// }
 
 if (isset($_POST["modif_image"])) {
 
@@ -94,7 +95,7 @@ if (isset($_POST["modif_image"])) {
 
     <h1 class="text-center m-4">MODIFIER LES INFORMATIONS DU PRODUIT</h1>
 
-    <form method="post" id="form1" enctype="multipart/form-data">
+    <form method="post" id="form1" enctype="multipart/form-data" action="../controller/controller_formulaire.php">
         <div class="form-card">
             <h2 class="text-center">Modifier information du produit</h2>
 
@@ -136,6 +137,7 @@ if (isset($_POST["modif_image"])) {
                 </div>
                 <br>
                 <br>
+                <input type="hidden" name="id_produit" value="<?= $id_produit ?>">
 
                 <div class="mb-3">
                     <label for="formFile" class="form-label">Choisissez une image</label>
@@ -146,7 +148,7 @@ if (isset($_POST["modif_image"])) {
                     <label for="categorie">Catégorie du produit</label>
                     <br>
                     <div class="col-3" id="selectRow">
-                        <select name="categorie" class="form-select">
+                        <select name="categorie" class="form-select" required>
                             <option value="defaut"></option>
                             <?php foreach ($categorie as $categ) { ?>
                                 <option value="<?= $categ["id_categorie"] ?>"><?= $categ["categorie"] ?></option>

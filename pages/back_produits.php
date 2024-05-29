@@ -14,7 +14,10 @@ $produits = allProduit();
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
-    <link rel="stylesheet" href="../css_files/table_back.css">
+    <link rel="stylesheet" href="css_files/table_back.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
     <title>backOffice Produit</title>
 </head>
 
@@ -26,7 +29,7 @@ $produits = allProduit();
         <br>
         <br>
         <form method="POST" action="../controller/controller_formulaire.php">
-            <table class="table table-hover">
+            <table class="table table-hover" id="tableau_produit">
                 <thead>
                     <tr>
                         <th scope="col">
@@ -56,6 +59,7 @@ $produits = allProduit();
                     <?php } ?>
                 </tbody>
             </table>
+            <br>
             <div class="text-end">
                 <button type="submit" name="produit_carrousel_accueil" class="btn btn-primary" disabled>Mettre dans le carrousel</button>
                 <button type="submit" name="produit_highlander" class="btn btn-primary" id="bouton_highlander" disabled>Mettre produit en avant</button>
@@ -63,6 +67,34 @@ $produits = allProduit();
             </div>
         </form>
     </div>
+
+    <!-- Script du dataTable -->
+    <script>
+        $(document).ready(function() {
+            var table = $('#tableau_produit').DataTable();
+            $('#tableau_produit').removeClass('dataTable');
+
+            // On page load, check the checkboxes that were previously checked
+            var checkedItems = JSON.parse(localStorage.getItem('checkedItems')) || [];
+            checkedItems.forEach(function(id) {
+                $('#' + id).prop('checked', true);
+            });
+
+            // On checkbox change, update the local storage
+            table.on('change', 'input[type="checkbox"]', function() {
+                var checkboxId = this.id;
+                if (this.checked) {
+                    checkedItems.push(checkboxId);
+                } else {
+                    var index = checkedItems.indexOf(checkboxId);
+                    if (index !== -1) {
+                        checkedItems.splice(index, 1);
+                    }
+                }
+                localStorage.setItem('checkedItems', JSON.stringify(checkedItems));
+            });
+        });
+    </script>
 
     <script>
         var boutonCarrousel = document.querySelector("button[name='produit_carrousel_accueil']");

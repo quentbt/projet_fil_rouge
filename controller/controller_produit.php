@@ -295,3 +295,30 @@ function hihglanderAcceuil($id_produit)
     }
     header("Location: /pages/accueil.php");
 }
+
+// Modifie le produit avec les nouvelles informations
+function modifierProduit($id_produit, $nom, $desc, $prix, $stock, $piece, $categorie, $image_ref, $origine_img_ref)
+{
+    global $bdd;
+
+    if ($origine_img_ref != "") {
+
+        $destination = "../images/" . $image_ref;
+        move_uploaded_file($origine_img_ref, $destination);
+    }
+
+    $image = '/images/' . $image_ref;
+
+    $modifierProduit = $bdd->prepare("UPDATE produits SET nom = :nom, description = :desc, prix = :prix, stock = :stock, piece = :piece, categorie = :categorie, image_produit = :image WHERE id_produit = :id_produit");
+    $modifierProduit->bindParam(":nom", $nom);
+    $modifierProduit->bindParam(":desc", $desc);
+    $modifierProduit->bindParam(":prix", $prix);
+    $modifierProduit->bindParam(":stock", $stock);
+    $modifierProduit->bindParam(":piece", $piece);
+    $modifierProduit->bindParam(":image", $image);
+    $modifierProduit->bindParam(":categorie", $categorie);
+    $modifierProduit->bindParam(":id_produit", $id_produit);
+    $modifierProduit->execute();
+
+    header("Location: /pages/back_produits.php");
+}

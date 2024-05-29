@@ -60,3 +60,15 @@ function ajouterImageProduit($images)
     }
     // header("Location: /pages/back_produits.php");
 }
+
+function imageRefProduit($id_produit)
+{
+    global $bdd;
+
+    $imageRef = $bdd->prepare("SELECT image_produit FROM produits WHERE id_produit = :id_produit");
+    $imageRef->bindParam(":id_produit", $id_produit);
+    $imageRef->execute();
+
+    $image = $imageRef->fetchColumn();
+    return $image;
+}

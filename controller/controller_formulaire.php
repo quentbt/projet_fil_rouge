@@ -91,5 +91,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $id_produit = $_POST["id_produit"];
         hihglanderAcceuil($id_produit);
+    } elseif (isset($_POST["modif_produit"])) {
+
+        $id_produit = $_POST["id_produit"];
+        $nom = $_POST["nom"];
+        $desc = $_POST["desc"];
+        $prix = $_POST["prix"];
+        $stock = $_POST["stock"];
+        $piece = $_POST["piece"];
+        $categorie = $_POST["categorie"];
+
+        if (isset($_FILES["image"]["name"]) && !empty($_FILES["image"]["name"])) {
+
+            $img_ref = $_FILES["image"]["name"];
+            $origine_img_ref = $_FILES["image"]["tmp_name"];
+        } else {
+
+            $img_ref = imageRefProduit($id_produit);
+            $origine_img_ref = "";
+        }
+
+        modifierProduit($id_produit, $nom, $desc, $prix, $stock, $piece, $categorie, $img_ref, $origine_img_ref);
     }
 }
