@@ -87,5 +87,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             deletePanier($id_client);
         }
         deleteUser($id_client);
+    } elseif (isset($_POST["produit_highlander"])) {
+
+        $id_produit = $_POST["id_produit"];
+        hihglanderAcceuil($id_produit);
     }
 }

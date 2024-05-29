@@ -13,6 +13,8 @@ function allProduit()
 
     return $resultat;
 }
+
+// Retourne le nombre de produits par catégorie
 function nombreProduitParCategorie($categorie)
 {
     global $bdd;
@@ -43,6 +45,17 @@ function produitCategorie($categorie, $pages, $limite)
     return $produits;
 }
 
+// Récupère les produits à afficher sur la page d'accueil
+function produitAccueil()
+{
+    global $bdd;
+
+    $prodAccueil = $bdd->query("SELECT * FROM produits WHERE highlander = 1 ORDER BY ordre ASC");
+    $produits = $prodAccueil->fetchAll(PDO::FETCH_ASSOC);
+
+    return $produits;
+}
+
 // Permet d'obtenir toutes les infos d'un produit
 function infoProduit($id_produit)
 {
@@ -55,6 +68,7 @@ function infoProduit($id_produit)
     return $produit;
 }
 
+// Récupère tous les materiaux
 function allMateriaux()
 {
     global $bdd;
@@ -191,7 +205,7 @@ function ajouterProduit($id_categorie, $nom, $description, $prix, $piece, $stock
 
     $ordre = maxOrdreProduit();
     $ordre++;
-    $isActive = 0;
+    $carrousel = 0;
 
     $verification = $bdd->prepare("SELECT * FROM produits WHERE nom = :nom");
     $verification->bindParam(":nom", $nom);
@@ -204,7 +218,7 @@ function ajouterProduit($id_categorie, $nom, $description, $prix, $piece, $stock
 
         $name = "/images/" . $nomImage;
 
-        $add = $bdd->prepare("INSERT INTO produits(id_produit, nom, description, prix, piece, stock, categorie, image_produit, ordre, isActive) VALUES (:id_prod, :nom, :desc, :prix, :piece, :stock, :categ, :img, :ordre, :isActive)");
+        $add = $bdd->prepare("INSERT INTO produits(id_produit, nom, description, prix, piece, stock, categorie, image_produit, ordre, carrousel) VALUES (:id_prod, :nom, :desc, :prix, :piece, :stock, :categ, :img, :ordre, :carrousel)");
         $add->bindParam(":id_prod", $id_produit);
         $add->bindParam(":nom", $nom);
         $add->bindParam(":desc", $description);
@@ -214,7 +228,7 @@ function ajouterProduit($id_categorie, $nom, $description, $prix, $piece, $stock
         $add->bindParam(":categ", $id_categorie);
         $add->bindParam(":img", $name);
         $add->bindParam(":ordre", $ordre);
-        $add->bindParam(":isActive", $isActive);
+        $add->bindParam(":carrousel", $carrousel);
         $add->execute();
 
         foreach ($materiaux as $mat) {
@@ -233,14 +247,15 @@ function ajouterProduit($id_categorie, $nom, $description, $prix, $piece, $stock
     }
 }
 
+// Fonction qui permet de mettre sur la page d'accueil les produits séléctionné.
 function produitActif($id_produit)
 {
     global $bdd;
 
-    $bdd->exec("UPDATE produits SET isActive = 0");
+    $bdd->exec("UPDATE produits SET  = 0");
 
     foreach ($id_produit as $id) {
-        $produitMisEnAvant = $bdd->prepare("UPDATE produits SET isActive = 1 WHERE id_produit = :id_produit");
+        $produitMisEnAvant = $bdd->prepare("UPDATE produits SET  = 1 WHERE id_produit = :id_produit");
         $produitMisEnAvant->bindParam(":id_produit", $id);
         $produitMisEnAvant->execute();
     }
@@ -251,7 +266,7 @@ function produitCarrousel()
 {
     global $bdd;
 
-    $produitCarrousel = $bdd->query("SELECT * FROM produits WHERE isActive = 1");
+    $produitCarrousel = $bdd->query("SELECT * FROM produits WHERE carrousel = 1");
     $prodCar = $produitCarrousel->fetchAll(PDO::FETCH_ASSOC);
 
     return $prodCar;
@@ -264,4 +279,19 @@ function maxOrdreProduit()
     $max_ordre = $bdd->query("SELECT MAX(ordre) FROM produits");
     $ordre = $max_ordre->fetchColumn();
     return $ordre;
+}
+
+function hihglanderAcceuil($id_produit)
+{
+    global $bdd;
+
+
+    $bdd->exec("UPDATE produits SET highlander = 0");
+    foreach ($id_produit as $id) {
+
+        $highlander = $bdd->prepare("UPDATE produits SET highlander = 1 WHERE id_produit = :id_produit");
+        $highlander->bindParam(":id_produit", $id);
+        $highlander->execute();
+    }
+    header("Location: /pages/accueil.php");
 }

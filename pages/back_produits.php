@@ -57,7 +57,8 @@ $produits = allProduit();
                 </tbody>
             </table>
             <div class="text-end">
-                <button type="submit" name="produit_carrousel_accueil" class="btn btn-primary" disabled>Mettre ces produits en avant</button>
+                <button type="submit" name="produit_carrousel_accueil" class="btn btn-primary" disabled>Mettre dans le carrousel</button>
+                <button type="submit" name="produit_highlander" class="btn btn-primary" id="bouton_highlander" disabled>Mettre produit en avant</button>
                 <button id="bouton-supprimer" type="submit" class="btn btn-danger" name="bouton_supprimer_produit" disabled>Supprimer</button>
             </div>
         </form>
@@ -87,6 +88,7 @@ $produits = allProduit();
 
     <script>
         var boutonSupprimer = document.getElementById("bouton-supprimer");
+        var boutonHighlander = document.getElementById("bouton_highlander");
         var toutCheckbox = document.getElementById("tout");
 
         function updateButtons() {
@@ -99,8 +101,10 @@ $produits = allProduit();
 
             if (auMoinsUneSelectionnee) {
                 boutonSupprimer.disabled = false;
+                boutonHighlander.disabled = false;
             } else {
                 boutonSupprimer.disabled = true;
+                boutonHighlander.disabled = true;
             }
         }
 

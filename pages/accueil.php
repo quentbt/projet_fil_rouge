@@ -2,8 +2,9 @@
 
 require_once '../controller/controller_categorie.php';
 require_once '../controller/controller_produit.php';
-$categories = categorieAccueil();
 
+$categories = categorieAccueil();
+$produits = produitAccueil();
 $images = produitCarrousel();
 
 ?>
@@ -48,7 +49,17 @@ $images = produitCarrousel();
     </div>
 
     <h2>Les Highlanders du moment</h2>
+    <div class="row justify-content-start m-4">
 
+        <?php foreach ($produits as $produit) { ?>
+            <div class="col-3 m-3">
+                <a href="/pages/produits.php?id_produit=<?= $produit["id_produit"] ?>" class="card">
+                    <img src="<?= $produit["image_produit"] ?>" alt="">
+                    <h2 class="product-name"><?= ucfirst($produit["nom"]) ?></h2>
+                </a>
+            </div>
+        <?php } ?>
+    </div>
 </body>
 
 </html>
