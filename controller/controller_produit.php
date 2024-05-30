@@ -247,21 +247,22 @@ function ajouterProduit($id_categorie, $nom, $description, $prix, $piece, $stock
     }
 }
 
-// Fonction qui permet de mettre sur la page d'accueil les produits séléctionné.
+// Fonction qui choisis les produits qui seront dans le carrousel.
 function produitActif($id_produit)
 {
     global $bdd;
 
-    $bdd->exec("UPDATE produits SET  = 0");
+    $bdd->exec("UPDATE produits SET carrousel = 0");
 
     foreach ($id_produit as $id) {
-        $produitMisEnAvant = $bdd->prepare("UPDATE produits SET  = 1 WHERE id_produit = :id_produit");
+        $produitMisEnAvant = $bdd->prepare("UPDATE produits SET carrousel = 1 WHERE id_produit = :id_produit");
         $produitMisEnAvant->bindParam(":id_produit", $id);
         $produitMisEnAvant->execute();
     }
     header("Location: /pages/accueil.php");
 }
 
+// Fonction qui affiche les produits dans le carrousel
 function produitCarrousel()
 {
     global $bdd;
@@ -272,6 +273,7 @@ function produitCarrousel()
     return $prodCar;
 }
 
+// Récupère le max de la colonne ordre 
 function maxOrdreProduit()
 {
     global $bdd;
@@ -281,6 +283,7 @@ function maxOrdreProduit()
     return $ordre;
 }
 
+// Fonction qui défini les produits qui seront mis sur la page d'accueil
 function hihglanderAcceuil($id_produit)
 {
     global $bdd;

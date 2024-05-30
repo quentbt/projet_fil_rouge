@@ -2,21 +2,26 @@
 
 include "../controller/controller_graph.php";
 
-$semaineBar = 1;
-$semainePie = 1;
+
 if (isset($_POST["graphVenteSemaine"])) {
     $semaineBar = $_POST["semaineBar"];
+} else {
+    $semaineBar = 1;
 }
-$dates = graphVenteParTemps($semaineBar)["dates"];
-$nbr_achat = graphVenteParTemps($semaineBar)["nbr_achat"];
 
 if (isset($_POST['graphVenteCategorie'])) {
     $semainePie = $_POST["semainePie"];
+} else {
+    $semainePie = 1;
 }
+
+// Bar Chart
+$dates = graphVenteParTemps($semaineBar)["dates"];
+$nbr_achat = graphVenteParTemps($semaineBar)["nbr_achat"];
+
+// Pie Chart
 $categorie = graphVenteParCategorie($semainePie)["categorie"];
 $nbr_produit = graphVenteParCategorie($semainePie)["nbr_achat"];
-
-// var_dump($semaineBar, $semainePie);
 
 ?>
 <!DOCTYPE html>
@@ -38,16 +43,16 @@ $nbr_produit = graphVenteParCategorie($semainePie)["nbr_achat"];
         <div class="col-5">
             <form method="POST">
                 <canvas id="myChart"></canvas>
-                <label for="customRange1" class="form-label">Choisissez le nombre de semaine : <span id="rangeValueBar">1</span></label>
-                <input type="range" class="form-range" id="semaineBar" name="semaineBar" min="1" max="5" step="1" oninput="updateValue(this.value, 'rangeValueBar')" value="1">
+                <label for="customRange1" class="form-label">Choisissez le nombre de semaine : <span id="rangeValueBar"><?= $semaineBar ?></span></label>
+                <input type="range" class="form-range" id="semaineBar" name="semaineBar" min="1" max="5" step="1" oninput="updateValue(this.value, 'rangeValueBar')" value="<?= $semaineBar ?>">
                 <button type="submit" name="graphVenteSemaine" class="btn btn-primary">Choisir</button>
             </form>
         </div>
         <div class="col-5">
             <form method="POST">
                 <canvas id="myGroupBarChart"></canvas>
-                <label for="customRange1" class="form-label">Choisissez le nombre de semaine : <span id="rangeValueGroupBar">1</span></label>
-                <input type="range" class="form-range" id="semainePie" name="semainePie" min="1" max="5" step="1" oninput="updateValue(this.value, 'rangeValuePie')" value="1">
+                <label for="customRange1" class="form-label">Choisissez le nombre de semaine : <span id="rangeValueGroupBar"><?= $semainePie ?></span></label>
+                <input type="range" class="form-range" id="semainePie" name="semainePie" min="1" max="5" step="1" oninput="updateValue(this.value, 'rangeValuePie')" value="<?= $semainePie ?>">
                 <button type="submit" name="graphVenteCategorie" class="btn btn-primary">Choisir</button>
             </form>
         </div>

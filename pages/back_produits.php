@@ -23,9 +23,6 @@ $produits = allProduit();
 
 <body>
     <div class="container">
-        <a href="/pages/ajouter_produit.php">
-            <button id="bouton-ajouter" type="button" class="btn btn-primary">Ajouter</button>
-        </a>
         <br>
         <br>
         <form method="POST" action="../controller/controller_formulaire.php">
@@ -43,7 +40,6 @@ $produits = allProduit();
                 </thead>
                 <tbody>
                     <?php foreach ($produits as $produit) { ?>
-
                         <tr>
                             <th>
                                 <div class="container_checkbox">
@@ -55,23 +51,32 @@ $produits = allProduit();
                             <td><?= $produit["prix"] ?></td>
                             <td><?= $produit["stock"] ?></td>
                         </tr>
-
                     <?php } ?>
                 </tbody>
             </table>
             <br>
-            <div class="text-end">
-                <button type="submit" name="produit_carrousel_accueil" class="btn btn-primary" disabled>Mettre dans le carrousel</button>
-                <button type="submit" name="produit_highlander" class="btn btn-primary" id="bouton_highlander" disabled>Mettre produit en avant</button>
-                <button id="bouton-supprimer" type="submit" class="btn btn-danger" name="bouton_supprimer_produit" disabled>Supprimer</button>
+            <div class="row">
+                <div class="col-4">
+                    <a href="/pages/ajouter_produit.php">
+                        <button class="btn btn-primary" id="bouton-ajouter" type="button">Ajouter Produit</button>
+                    </a>
+                </div>
+                <div class="col-8 text-end">
+                    <button type="submit" name="produit_carrousel_accueil" class="btn btn-primary" disabled>Mettre dans le carrousel</button>
+                    <button type="submit" name="produit_highlander" class="btn btn-primary" id="bouton_highlander" disabled>Mettre produit en avant</button>
+                    <button id="bouton-supprimer" type="submit" class="btn btn-danger" name="bouton_supprimer_produit" disabled>Supprimer</button>
+                </div>
             </div>
         </form>
     </div>
-
+    <br><br>
     <!-- Script du dataTable -->
     <script>
         $(document).ready(function() {
-            var table = $('#tableau_produit').DataTable();
+            $('#tableau_produit').DataTable({
+                "paging": false,
+                "retrieve": true
+            });
             $('#tableau_produit').removeClass('dataTable');
 
             // On page load, check the checkboxes that were previously checked
@@ -95,49 +100,28 @@ $produits = allProduit();
             });
         });
     </script>
+    <!-- Fin dataTables -->
 
     <script>
         var boutonCarrousel = document.querySelector("button[name='produit_carrousel_accueil']");
+        var boutonSupprimer = document.getElementById("bouton-supprimer");
+        var boutonHighlander = document.getElementById("bouton_highlander");
+        var toutCheckbox = document.getElementById("tout");
         var checkboxesProduits = document.querySelectorAll("input[name='id_produit[]']");
 
         function updateButtons() {
             var count = 0;
-            checkboxesProduits.forEach(function(checkbox) {
-                if (checkbox.checked) {
-                    count++;
-                }
-            });
-
-            boutonCarrousel.disabled = count !== 3;
-        }
-
-        checkboxesProduits.forEach(function(checkbox) {
-            checkbox.addEventListener("change", updateButtons);
-        });
-
-        updateButtons();
-    </script>
-
-    <script>
-        var boutonSupprimer = document.getElementById("bouton-supprimer");
-        var boutonHighlander = document.getElementById("bouton_highlander");
-        var toutCheckbox = document.getElementById("tout");
-
-        function updateButtons() {
             var auMoinsUneSelectionnee = false;
             checkboxesProduits.forEach(function(checkbox) {
                 if (checkbox.checked) {
+                    count++;
                     auMoinsUneSelectionnee = true;
                 }
             });
 
-            if (auMoinsUneSelectionnee) {
-                boutonSupprimer.disabled = false;
-                boutonHighlander.disabled = false;
-            } else {
-                boutonSupprimer.disabled = true;
-                boutonHighlander.disabled = true;
-            }
+            boutonCarrousel.disabled = count !== 3;
+            boutonSupprimer.disabled = !auMoinsUneSelectionnee;
+            boutonHighlander.disabled = !auMoinsUneSelectionnee;
         }
 
         checkboxesProduits.forEach(function(checkbox) {
@@ -154,8 +138,6 @@ $produits = allProduit();
 
         updateButtons();
     </script>
-
-
 </body>
 
 </html>
