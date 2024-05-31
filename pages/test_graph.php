@@ -46,6 +46,7 @@ $nbr_produit = graphVenteParCategorie($semainePie)["nbr_achat"];
                 <label for="customRange1" class="form-label">Choisissez le nombre de semaine : <span id="rangeValueBar"><?= $semaineBar ?></span></label>
                 <input type="range" class="form-range" id="semaineBar" name="semaineBar" min="1" max="5" step="1" oninput="updateValue(this.value, 'rangeValueBar')" value="<?= $semaineBar ?>">
                 <button type="submit" name="graphVenteSemaine" class="btn btn-primary">Choisir</button>
+                <p><small><small>Si aucune donnée pour tel jour ou semaine. C'est qu'il n'y a pas eu d'achat </small></small></p>
             </form>
         </div>
         <div class="col-5">
@@ -137,24 +138,26 @@ $nbr_produit = graphVenteParCategorie($semainePie)["nbr_achat"];
     </script>
     <!-- GROUP BAR CHART -->
     <script>
-        let ctxGroup = document.getElementById('myGroupBarChart').getContext('2d');
-        let myGroupBarChart = new Chart(ctxGroup, {
+        var ctx = document.getElementById('myGroupBarChart').getContext('2d');
+        var myChart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                labels: ['Jan', 'Fev', 'Mar', 'Avr', 'Mai', 'Jun'],
                 datasets: [{
-                    label: '# of Votes',
-                    data: [12, 19, 3, 5, 2, 3],
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    borderWidth: 1
-                }, {
-                    label: '# of Points',
-                    data: [7, 11, 5, 8, 3, 7],
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    borderWidth: 1
-                }]
+                        label: 'Dataset 1',
+                        data: [12, 19, 3, 5, 2, 3],
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Dataset 2',
+                        data: [5, 9, 3, 5, 22, 3],
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }
+                ]
             },
             options: {
                 scales: {

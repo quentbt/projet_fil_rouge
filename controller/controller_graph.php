@@ -54,10 +54,9 @@ function graphVenteParTemps($semaine)
 
 function graphVenteParCategorie($semaine)
 {
-
     global $bdd;
 
-    $dataHist = $bdd->prepare("SELECT c.categorie, COUNT(*) as nombre FROM historique h JOIN panier_produit p_pr ON h.id_panier = p_pr.id_panier JOIN produits pr ON p_pr.id_produit = pr.id_produit JOIN categories c ON pr.categorie = c.id_categorie WHERE h.date_achat >= DATE(NOW()) - INTERVAL :min_date WEEK GROUP BY pr.categorie");
+    $dataHist = $bdd->prepare("SELECT c.categorie, COUNT(pp.id_produit) as id_produit, pp.quantite, h.date_achat FROM categories c JOIN produits p ON c.id_categorie = p.categorie JOIN panier_produit pp ON p.id_produit = pp.id_produit JOIN historique h ON pp.id_panier = h.id_panier WHERE date_achat > DATE(NOW()) - INTERVAL :min_date WEEK GROUP BY p.categorie");
     $dataHist->bindParam(":min_date", $semaine);
     $dataHist->execute();
     $resultat = $dataHist->fetchAll(PDO::FETCH_ASSOC);
@@ -67,7 +66,8 @@ function graphVenteParCategorie($semaine)
     foreach ($resultat as $result) {
 
         $categorie[] = $result["categorie"];
-        $nbr_produit[] = $result["nombre"];
+        $nombre = $result["id_produit"] * $result["quantite"];
+        $nbr_produit[] = $nombre;
     }
 
     return [

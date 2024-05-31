@@ -2,7 +2,7 @@
 
 require_once "../controller/controller_client.php";
 
-$id_client = 1;
+$id_client = 2;
 $commandes = commandeUser($id_client);
 
 ?>
