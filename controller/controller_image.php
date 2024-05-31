@@ -1,7 +1,8 @@
 <?php
 
-require_once "../connexion_bdd/connexion_bdd.php";
-require_once "../controller/controller_produit.php";
+$root = $_SERVER["DOCUMENT_ROOT"];
+require_once($root . "/connexion_bdd/connexion_bdd.php");
+require_once($root . "/controller/controller_produit.php");
 
 $bdd = db_connect();
 

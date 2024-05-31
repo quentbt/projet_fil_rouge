@@ -1,8 +1,9 @@
 <?php
 
-require_once "../controller/controller_client.php";
+$root = $_SERVER["DOCUMENT_ROOT"];
+require_once($root . "/controller/controller_client.php");
 
-$id_client = 2;
+$id_client = 1;
 $commandes = commandeUser($id_client);
 
 ?>

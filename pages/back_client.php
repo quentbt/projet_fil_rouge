@@ -1,6 +1,7 @@
 <?php
 
-require_once "../controller/controller_client.php";
+$root = $_SERVER["DOCUMENT_ROOT"];
+require_once($root . "/controller/controller_client.php");
 $users = allUser();
 
 // PAGE IMPOSSIBLE D'ACCES SI L'UTILISATEUR N'EST PAS ADMIN.

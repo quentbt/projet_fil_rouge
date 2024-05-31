@@ -1,6 +1,7 @@
 <?php
 
-require_once "../controller/controller_produit.php";
+$root = $_SERVER["DOCUMENT_ROOT"];
+require_once($root . "/controller/controller_produit.php");
 $produits = allProduit();
 
 // PAGE IMPOSSIBLE D'ACCES SI L'UTILISATEUR N'EST PAS ADMIN.
@@ -78,26 +79,6 @@ $produits = allProduit();
                 "retrieve": true
             });
             $('#tableau_produit').removeClass('dataTable');
-
-            // On page load, check the checkboxes that were previously checked
-            var checkedItems = JSON.parse(localStorage.getItem('checkedItems')) || [];
-            checkedItems.forEach(function(id) {
-                $('#' + id).prop('checked', true);
-            });
-
-            // On checkbox change, update the local storage
-            table.on('change', 'input[type="checkbox"]', function() {
-                var checkboxId = this.id;
-                if (this.checked) {
-                    checkedItems.push(checkboxId);
-                } else {
-                    var index = checkedItems.indexOf(checkboxId);
-                    if (index !== -1) {
-                        checkedItems.splice(index, 1);
-                    }
-                }
-                localStorage.setItem('checkedItems', JSON.stringify(checkedItems));
-            });
         });
     </script>
     <!-- Fin dataTables -->

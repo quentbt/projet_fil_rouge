@@ -1,6 +1,7 @@
 <?php
 
-include "../controller/controller_graph.php";
+$root = $_SERVER["DOCUMENT_ROOT"];
+include($root . "/controller/controller_graph.php");
 
 
 if (isset($_POST["graphVenteSemaine"])) {

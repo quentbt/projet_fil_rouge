@@ -1,6 +1,6 @@
 <?php
-
-require_once "../controller/controller_categorie.php";
+$root = $_SERVER["DOCUMENT_ROOT"];
+require_once($root . "/controller/controller_categorie.php");
 $categorie = allCategorie();
 
 ?>

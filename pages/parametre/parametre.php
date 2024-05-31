@@ -1,40 +1,11 @@
 <?php
 
-require_once "../../connexion_bdd/connexion_bdd.php";
+$root = $_SERVER["DOCUMENT_ROOT"];
+require_once($root . "/controller/controller_client.php");
 
-$bdd = db_connect();
-$sessionId = 1; //$_SESSION["id"];
+$id_client = 1;
 
-$userParam = $bdd->prepare("SELECT * FROM clients WHERE id_client = :id");
-$userParam->bindParam(":id", $sessionId);
-
-$userParam->execute();
-
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-    $nom = $_POST["nom"];
-    $prenom = $_POST["prenom"];
-    $adresse1 = $_POST["adresse1"];
-    $adresse2 = $_POST["adresse2"];
-    $ville = $_POST["ville"];
-    $code_postal = $_POST["code_postal"];
-    $tel = $_POST["tel"];
-    $email = $_POST["email"];
-
-    $modifUser = $bdd->prepare("UPDATE clients SET (nom = :nom, prenom = :prenom, adresse1 = :adresse1, adresse2 = :adresse2, ville = :ville, code_postal = :ville, telephone = :tel, email = :mail)");
-
-    $modifUser->bindParam(":nom", $nom);
-    $modifUser->bindParam(":prenom", $prenom);
-    $modifUser->bindParam(":adresse1", $adresse1);
-    $modifUser->bindParam(":adresse2", $adresse2);
-    $modifUser->bindParam(":ville", $ville);
-    $modifUser->bindParam(":code_postal", $code_postal);
-    $modifUser->bindParam(":telephone", $tel);
-    $modifUser->bindParam(":email", $email);
-
-    $modifUser->execute();
-}
+$userParam = infoUser($id_client);
 
 ?>
 <!DOCTYPE html>

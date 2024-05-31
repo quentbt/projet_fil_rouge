@@ -1,6 +1,8 @@
 <?php
-require_once "../controller/controller_produit.php";
-require_once "../controller/controller_image.php";
+
+$root = $_SERVER["DOCUMENT_ROOT"];
+require_once($root . "/controller/controller_produit.php");
+require_once($root . "/controller/controller_image.php");
 
 $id_produit = $_GET['id_produit'];
 $id_client = 1;

@@ -1,7 +1,8 @@
 <?php
 
-require_once "../connexion_bdd/connexion_bdd.php";
-require_once "../controller/controller_panier.php";
+$root = $_SERVER["DOCUMENT_ROOT"];
+require_once($root . "/connexion_bdd/connexion_bdd.php");
+require_once($root . "/controller/controller_panier.php");
 $bdd = db_connect();
 
 // Récupère tous les utilisateurs
@@ -67,4 +68,17 @@ function adresseFacturation($id_client)
 
     $resultat = $adresse->fetchAll(PDO::FETCH_ASSOC);
     return $resultat;
+}
+
+// Retourne toutes les informations d'un utilisateur
+function infoUser($id_client)
+{
+    global $bdd;
+
+    $infoUser = $bdd->prepare("SELECT * FROM clients WHERE id_client = :id_client");
+    $infoUser->bindParam(":id_client", $id_client);
+    $infoUser->execute();
+
+    $user = $infoUser->fetchAll(PDO::FETCH_ASSOC);
+    return $user;
 }

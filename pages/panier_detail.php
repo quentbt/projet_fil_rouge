@@ -1,7 +1,8 @@
 <?php
 
-require_once "../controller/controller_panier.php";
-require_once "../controller/controller_client.php";
+$root = $_SERVER["DOCUMENT_ROOT"];
+require_once($root . "/controller/controller_panier.php");
+require_once($root . "/controller/controller_client.php");
 
 $id_panier = $_GET["id_panier"];
 // $id_client = $_SESSION["id_client"];

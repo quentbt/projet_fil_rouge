@@ -1,6 +1,7 @@
 <?php
 
-require_once "../connexion_bdd/connexion_bdd.php";
+$root = $_SERVER["DOCUMENT_ROOT"];
+require_once($root . "/connexion_bdd/connexion_bdd.php");
 
 $bdd = db_connect();
 
