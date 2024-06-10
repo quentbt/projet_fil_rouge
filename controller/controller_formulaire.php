@@ -112,17 +112,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             deletePanier($id_client);
         }
         deleteUser($id_client);
-    } elseif (isset($_POST["bouton_supprimer_client"])) {
-
-        $id_client = $_POST["id_client"];
-        $id_panier = panierClient($id_client);
-
-        if (isset($id_panier) && !empty($id_panier)) {
-            deleteHistorique($id_panier);
-            deletePanierProduit($id_panier);
-            deletePanier($id_client);
-        }
-        deleteUser($id_client);
     }
     // Tous les elseif() concernant le panier 
     elseif (isset($_POST["panier"])) {
