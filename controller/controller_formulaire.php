@@ -113,4 +113,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         modifierProduit($id_produit, $nom, $desc, $prix, $stock, $piece, $categorie, $img_ref, $origine_img_ref);
     }
+    if (isset($_POST["categorie_affiche"])) {
+
+        $id_categorie = $_POST["id_categorie"];
+        affiche_categorie_accueil($id_categorie);
+    }
 }

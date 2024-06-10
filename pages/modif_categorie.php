@@ -23,7 +23,7 @@ $categorie = allCategorie();
         <div class="center">
             <div class="row m-4">
                 <div class="col-3">
-                    <label for="categorie">Chosissez un produit :</label>
+                    <label for="categorie">Chosissez une catégorie :</label>
                 </div>
 
                 <div class="col-9">

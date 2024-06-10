@@ -16,11 +16,11 @@ function allCategorie()
     return $categorie;
 }
 
-// 
+// Retourne les catégorie affiché sur la page d'accueil
 function categorieAccueil()
 {
     global $bdd;
-    $selectCateg = $bdd->query("SELECT categorie, img_categ FROM categories ORDER BY ordre ASC");
+    $selectCateg = $bdd->query("SELECT categorie, img_categ FROM categories WHERE categorie_accueil = 1 ORDER BY ordre ASC");
     $categories = $selectCateg->fetchAll(PDO::FETCH_ASSOC);
 
     return $categories;
@@ -69,4 +69,19 @@ function modifCateg($categorie, $emplacementImage, $nomImage, $nouveau_nom_categ
     }
 
     header("Location: /pages/back_produits.php");
+}
+
+// Fonction qui modifie la table pour mettre affiche_categorie sur 1
+function affiche_categorie_accueil($id_categorie)
+{
+    global $bdd;
+
+    $bdd->exec("UPDATE categories SET categorie_accueil = 0");
+
+    foreach ($id_categorie as $id) {
+        $categorie_accueil = $bdd->prepare("UPDATE categories SET categorie_accueil = 1 WHERE id_categorie = :id");
+        $categorie_accueil->bindParam(":id", $id);
+        $categorie_accueil->execute();
+    }
+    header("Location: /pages/accueil.php");
 }

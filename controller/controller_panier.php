@@ -94,6 +94,7 @@ function prixQtt($id_panier)
     return $prixFinal += $tva;
 }
 
+// Modifie la quantité d'un produit dans le panier
 function updateQuantiteProduit($id_produit, $id_panier, $quantite)
 {
     global $bdd;
