@@ -8,6 +8,8 @@ require_once 'controller_client.php';
 // Tous les formulaires arrivent sur cette page, des méthodes sont exécutés en fonction des boutons envoyés.
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
+    // Tous les elseif() concernant les catégories
+
     if (isset($_POST["ordreCateg"])) {
 
         $id_categories = $_POST["id_categorie"];
@@ -20,21 +22,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $name = $_FILES["image"]["name"];
         $nouveau_nom = $_POST["new_name"];
         modifCateg($cat, $tmpName, $name, $nouveau_nom);
-    } elseif (isset($_POST["panier"])) {
+    } elseif (isset($_POST["categorie_affiche"])) {
 
-        $id_client = $_POST["id_client"];
-        $id_produit = $_POST["id_produit"];
-        $quantite = $_POST["quantite"];
+        $id_categorie = $_POST["id_categorie"];
+        affiche_categorie_accueil($id_categorie);
+    } elseif (isset($_POST["bouton_supprimer_categorie"])) {
 
-        insertPanier($id_produit, $quantite, $id_client);
-    } elseif (isset($_POST['quantity'])) {
-
-        $id_produit = $_POST["id_produit"];
-        $id_panier = $_POST["id_panier"];
-        $quantite = $_POST["quantity"];
-
-        updateQuantiteProduit($id_produit, $id_panier, $quantite);
-    } elseif (isset($_POST["produits_acheter"])) {
+        $id_categorie = $_POST["id_categorie"];
+        deleteCategorie($id_categorie);
+    }
+    // Tous les elseif() concernant les produits
+    elseif (isset($_POST["produits_acheter"])) {
 
         $id_panier = $_POST["id_panier"];
         $id_client = $_POST["id_client"];
@@ -76,17 +74,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $id_produit = $_POST["id_produit"];
         produitActif($id_produit);
-    } elseif (isset($_POST["bouton_supprimer_client"])) {
-
-        $id_client = $_POST["id_client"];
-        $id_panier = panierClient($id_client);
-
-        if (isset($id_panier) && !empty($id_panier)) {
-            deleteHistorique($id_panier);
-            deletePanierProduit($id_panier);
-            deletePanier($id_client);
-        }
-        deleteUser($id_client);
     } elseif (isset($_POST["produit_highlander"])) {
 
         $id_produit = $_POST["id_produit"];
@@ -113,9 +100,44 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         modifierProduit($id_produit, $nom, $desc, $prix, $stock, $piece, $categorie, $img_ref, $origine_img_ref);
     }
-    if (isset($_POST["categorie_affiche"])) {
+    // Tous les elseif() concernant les clients
+    elseif (isset($_POST["bouton_supprimer_client"])) {
 
-        $id_categorie = $_POST["id_categorie"];
-        affiche_categorie_accueil($id_categorie);
+        $id_client = $_POST["id_client"];
+        $id_panier = panierClient($id_client);
+
+        if (isset($id_panier) && !empty($id_panier)) {
+            deleteHistorique($id_panier);
+            deletePanierProduit($id_panier);
+            deletePanier($id_client);
+        }
+        deleteUser($id_client);
+    } elseif (isset($_POST["bouton_supprimer_client"])) {
+
+        $id_client = $_POST["id_client"];
+        $id_panier = panierClient($id_client);
+
+        if (isset($id_panier) && !empty($id_panier)) {
+            deleteHistorique($id_panier);
+            deletePanierProduit($id_panier);
+            deletePanier($id_client);
+        }
+        deleteUser($id_client);
+    }
+    // Tous les elseif() concernant le panier 
+    elseif (isset($_POST["panier"])) {
+
+        $id_client = $_POST["id_client"];
+        $id_produit = $_POST["id_produit"];
+        $quantite = $_POST["quantite"];
+
+        insertPanier($id_produit, $quantite, $id_client);
+    } elseif (isset($_POST['quantity'])) {
+
+        $id_produit = $_POST["id_produit"];
+        $id_panier = $_POST["id_panier"];
+        $quantite = $_POST["quantity"];
+
+        updateQuantiteProduit($id_produit, $id_panier, $quantite);
     }
 }

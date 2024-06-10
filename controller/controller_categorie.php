@@ -85,3 +85,16 @@ function affiche_categorie_accueil($id_categorie)
     }
     header("Location: /pages/accueil.php");
 }
+
+// Fonction qui supprime toutes les catégories séléctionnées
+function deleteCategorie($id_categorie)
+{
+    global $bdd;
+
+    foreach ($id_categorie as $id) {
+        $deleteCateg = $bdd->prepare("DELETE FROM categories WHERE id_categorie = :id");
+        $deleteCateg->bindParam(":id", $id);
+        $deleteCateg->execute();
+    }
+    header("Location: /pages/admin/back_categories.php");
+}
