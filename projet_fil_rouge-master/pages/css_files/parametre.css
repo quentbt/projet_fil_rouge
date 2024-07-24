@@ -1,0 +1,41 @@
+* {
+
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.input_text {
+
+    border-radius: 10px 10px 10px 10px;
+    width: 80%;
+    height: 40px;
+    padding: 0.5rem;
+}
+
+.input-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.center {
+
+    margin-left: 15%;
+    margin-right: 15%;
+}
+
+.submit-button {
+
+    margin-top: 2rem;
+    border-radius: 10px;
+    color: white;
+    background-color: #1E7FCB;
+    width: 50%;
+    height: 40px;
+    font-size: 1.5rem;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
