@@ -80,7 +80,6 @@ function allMateriaux()
     return $materiaux;
 }
 
-
 // Permet d'obtenir tous les matériaux d'un produit
 function materiauxProduit($id_produit)
 {
@@ -137,7 +136,7 @@ function stockProduit($id_produit)
     return $stock;
 }
 
-// Répère le prix d'un produit
+// Récupère le prix d'un produit
 function prixProduit($id_produit)
 {
     global $bdd;
@@ -248,7 +247,7 @@ function ajouterProduit($id_categorie, $nom, $description, $prix, $piece, $stock
     }
 }
 
-// Fonction qui choisis les produits qui seront dans le carrousel.
+// Fonction qui choisi les produits qui seront dans le carrousel.
 function produitActif($id_produit)
 {
     global $bdd;
@@ -326,3 +325,5 @@ function modifierProduit($id_produit, $nom, $desc, $prix, $stock, $piece, $categ
 
     header("Location: /pages/back_produits.php");
 }
+
+db_disconnect($bdd);

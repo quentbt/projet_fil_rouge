@@ -26,6 +26,64 @@ function categorieAccueil()
     return $categories;
 }
 
+// Retourne les produits trouvé après avoir appliqué les filtres
+function filtre_produit($min_prix, $max_prix, $materiaux, $categorie)
+{
+    global $bdd;
+
+    // Récupération de l'ID de la catégorie
+    $categ = $bdd->prepare("SELECT id_categorie FROM categories WHERE categorie = :categ");
+    $categ->bindParam(":categ", $categorie);
+    $categ->execute();
+    $cat = $categ->fetchColumn();
+
+    if (empty($max_prix)) {
+        $max_prix = PHP_INT_MAX;
+    }
+
+    if (empty($min_prix)) {
+        $min_prix = 0;
+    }
+
+    if ($min_prix > $max_prix) {
+        echo "Problème prix";
+        return;
+    }
+
+    if (sizeof($materiaux) == 0) {
+
+        $requete = $bdd->prepare("SELECT * FROM produits WHERE prix >= :prix_min AND prix <= :prix_max AND categorie = :id_categorie");
+        $requete->bindParam(":prix_min", $min_prix);
+        $requete->bindParam(":prix_max", $max_prix);
+        $requete->bindParam("id_categorie", $cat);
+        $requete->execute();
+
+        $produit_trouve = $requete->fetchAll(PDO::FETCH_ASSOC);
+    } else {
+        $whereClause = implode(',', array_map('intval', $materiaux));
+
+        // Construire la requête SQL
+        $sql = " SELECT p.* FROM produits p JOIN prod_mat pm ON p.id_produit = pm.id_produit WHERE p.categorie = $cat AND pm.id_materiaux IN ($whereClause) GROUP BY p.id_produit HAVING COUNT(DISTINCT pm.id_materiaux) = " . count($materiaux) . ";";
+
+        $requete = $bdd->query($sql);
+        $req = $requete->fetchAll(PDO::FETCH_ASSOC);
+        $produit_trouve = [];
+
+        foreach ($req as $r) {
+
+            $prix = $r["prix"];
+            if ($prix >= $min_prix && $prix <= $max_prix) {
+
+                $produit_trouve[] = $r;
+            }
+        }
+    }
+    return $produit_trouve;
+}
+
+
+
+
 // Change l'ordre d'affichage des catégories sur la page d'accueil
 function modifOrdre($id_categ, $donnees)
 {
@@ -98,3 +156,5 @@ function deleteCategorie($id_categorie)
     }
     header("Location: /pages/admin/back_categories.php");
 }
+
+db_disconnect($bdd);

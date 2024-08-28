@@ -82,3 +82,95 @@ function infoUser($id_client)
     $user = $infoUser->fetchAll(PDO::FETCH_ASSOC);
     return $user;
 }
+
+function maxIdClient()
+{
+    global $bdd;
+    $id_client = $bdd->query("SELECT MAX(id_client) AS id_client FROM clients");
+    $id = $id_client->fetchColumn();
+
+    return $id;
+}
+
+function verifMail($email)
+{
+    global $bdd;
+
+    $requete = $bdd->prepare("SELECT COUNT(*) FROM clients WHERE email = :email");
+    $requete->bindParam(':email', $email);
+    $requete->execute();
+
+    $emailCount = $requete->fetchColumn();
+
+    return $emailCount;
+}
+
+
+function inscription($nom, $prenom, $adresse1, $adresse2, $ville, $cp, $tel, $email, $mdp, $mdp_valide)
+{
+    global $bdd;
+
+    if ($mdp == $mdp_valide) {
+        $hash_mdp = password_hash($mdp, PASSWORD_DEFAULT);
+
+        if (empty($adresse2) || $adresse2 == NULL) {
+            $adresse2 = "";
+        }
+
+        if (verifMail($email) > 0) {
+
+            echo "Cette email est déjà utilisé";
+            break;
+        }
+
+        $id_client = maxIdClient() + 1;
+
+        $inscript = $bdd->prepare("INSERT INTO clients(id_client, nom, prenom, adresse1, adresse2, ville, code_postal, email, telephone, mdp) VALUES (:id_client, :nom, :prenom, :adresse1, :adresse2, :ville, :cp, :email, :tel, :mdp)");
+        $inscript->bindParam(":id_client", $id_client);
+        $inscript->bindParam(":nom", $nom);
+        $inscript->bindParam(":prenom", $prenom);
+        $inscript->bindParam(":adresse1", $adresse1);
+        $inscript->bindParam(":adresse2", $adresse2);
+        $inscript->bindParam(":ville", $ville);
+        $inscript->bindParam(":cp", $cp);
+        $inscript->bindParam(":email", $email);
+        $inscript->bindParam(":tel", $tel);
+        $inscript->bindParam(":mdp", $hash_mdp);
+        $inscript->execute();
+        $ins = $inscript->fetchAll(PDO::FETCH_ASSOC);
+
+        header("Location: /pages/connexion.php");
+        return $ins;
+    } else {
+        echo "les mots de passe ne correspondent pas";
+        break;
+    }
+}
+
+function connexion($email, $mdp)
+{
+    global $bdd;
+
+    $client = $bdd->prepare("SELECT id_client, mdp FROM clients WHERE email = :email");
+    $client->bindParam(':email', $email);
+    $client->execute();
+
+    $result = $client->fetch(PDO::FETCH_ASSOC);
+
+    if ($result) {
+        if (password_verify($mdp, $result['mdp'])) {
+            session_start();
+
+            $_SESSION['id_client'] = $result['id_client'];
+            $_SESSION['email'] = $email;
+
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
+}
+
+db_disconnect($bdd);

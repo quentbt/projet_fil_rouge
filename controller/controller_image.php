@@ -73,3 +73,5 @@ function imageRefProduit($id_produit)
     $image = $imageRef->fetchColumn();
     return $image;
 }
+
+db_disconnect($bdd);

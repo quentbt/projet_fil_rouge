@@ -81,3 +81,5 @@ function multiBarChart($semaine)
 {
     global $bdd;
 }
+
+db_disconnect($bdd);

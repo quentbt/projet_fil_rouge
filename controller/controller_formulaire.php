@@ -112,6 +112,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             deletePanier($id_client);
         }
         deleteUser($id_client);
+    } elseif (isset($_POST["inscription"])) {
+
+        $nom = $_POST["nom"];
+        $prenom = $_POST["prenom"];
+        $adresse1 = $_POST["adresse1"];
+        $adresse2 = $_POST["adresse2"];
+        $ville = $_POST["ville"];
+        $cp = $_POST["cp"];
+        $tel = $_POST["tel"];
+        $email = $_POST["email"];
+        $mdp = $_POST["mdp"];
+        $mdp_valide = $_POST["mdp_valide"];
+
+        inscription($nom, $prenom, $adresse1, $adresse2, $ville, $cp, $tel, $email, $mdp, $mdp_valide);
+    } elseif (isset($_POST["connexion"])) {
+
+        $email = $_POST["email"];
+        $mdp = $_POST["mdp"];
+        connexion($email, $mdp);
     }
     // Tous les elseif() concernant le panier 
     elseif (isset($_POST["panier"])) {

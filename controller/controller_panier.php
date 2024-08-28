@@ -106,13 +106,26 @@ function updateQuantiteProduit($id_produit, $id_panier, $quantite)
     $modifQtt->execute();
 }
 
-// Permet de validé une commande, créer un nouveau panier qui permet de remettre la page panier.php blanche
+// Récupère le max id de l'historique
+function maxIdHistorique()
+{
+    global $bdd;
+
+    $maxiD = $bdd->query("SELECT MAX(id_historique) FROM historique");
+    $id = $maxiD->fetchColumn();
+
+    return $id;
+}
+
+// Permet de validé une commande, créer un nouveau panier qui permet de remettre la page panier.php blanche, ajoute la commande passé à l'historique
 function PanierValide($id_panier, $id_client)
 {
     global $bdd;
     $cout_total = prixQtt($id_panier);
+    $id_historique = maxIdHistorique() + 1;
 
-    $insertHist = $bdd->prepare("INSERT INTO historique(id_panier, date_achat, cout_total) VALUES (:id_panier, NOW(), :cout_total)");
+    $insertHist = $bdd->prepare("INSERT INTO historique(id_historique, id_panier, date_achat, cout_total) VALUES (:id_historique,:id_panier, NOW(), :cout_total)");
+    $insertHist->bindParam(":id_historique", $id_historique);
     $insertHist->bindParam(":id_panier", $id_panier);
     $insertHist->bindParam(":cout_total", $cout_total);
     $insertHist->execute();
@@ -207,3 +220,5 @@ function produitCommande($id_panier)
     $panier = $produitCommande->fetchAll(PDO::FETCH_ASSOC);
     return $panier;
 }
+
+db_disconnect($bdd);
