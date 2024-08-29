@@ -36,7 +36,7 @@ function commandeUser($id_client)
 {
     global $bdd;
 
-    $requete = $bdd->prepare("SELECT p.id_panier, COUNT(pp.id_produit) as nbr_produit, h.date_achat as date_achat, cout_total FROM panier p JOIN panier_produit pp ON p.id_panier = pp.id_panier JOIN historique h ON p.id_panier = h.id_panier WHERE p.id_client = :id_client GROUP BY p.id_panier, date_achat ORDER BY YEAR(date_achat), id_panier;");
+    $requete = $bdd->prepare("SELECT p.id_panier, COUNT(pp.id_produit) AS nbr_produit, h.date_achat AS date_achat, h.cout_total FROM panier p JOIN panier_produit pp ON p.id_panier = pp.id_panier JOIN historique h ON p.id_panier = h.id_panier WHERE p.id_client = :id_client GROUP BY p.id_panier, h.date_achat, h.cout_total ORDER BY YEAR(h.date_achat), p.id_panier ");
     $requete->bindParam(":id_client", $id_client);
     $requete->execute();
     $resultat = $requete->fetchAll(PDO::FETCH_BOTH);
@@ -120,7 +120,7 @@ function inscription($nom, $prenom, $adresse1, $adresse2, $ville, $cp, $tel, $em
         if (verifMail($email) > 0) {
 
             echo "Cette email est déjà utilisé";
-            break;
+            return;
         }
 
         $id_client = maxIdClient() + 1;
@@ -143,7 +143,7 @@ function inscription($nom, $prenom, $adresse1, $adresse2, $ville, $cp, $tel, $em
         return $ins;
     } else {
         echo "les mots de passe ne correspondent pas";
-        break;
+        return;
     }
 }
 
@@ -163,12 +163,14 @@ function connexion($email, $mdp)
 
             $_SESSION['id_client'] = $result['id_client'];
             $_SESSION['email'] = $email;
-
+            header("Location: /pages/accueil.php");
             return true;
         } else {
+            header("Location: /pages/connexion.php");
             return false;
         }
     } else {
+        header("Location: /pages/connexion.php");
         return false;
     }
 }

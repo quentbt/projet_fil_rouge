@@ -3,6 +3,11 @@ $root = $_SERVER["DOCUMENT_ROOT"];
 require_once($root . "/controller/controller_categorie.php");
 $categorie = allCategorie();
 
+session_start();
+if (isset($_SESSION["id_client"])) {
+    $id_client = $_SESSION["id_client"];
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

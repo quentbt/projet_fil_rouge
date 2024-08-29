@@ -5,6 +5,11 @@ require_once($root . '/controller/controller_produit.php');
 require_once($root . '/controller/controller_image.php');
 require_once($root . '/controller/controller_categorie.php');
 
+session_start();
+if (isset($_SESSION["id_client"])) {
+    $id_client = $_SESSION["id_client"];
+}
+
 $categ = $_GET['categorie'];
 $pages = isset($_GET['page']) ? $_GET['page'] : 1;
 $limite = 5;

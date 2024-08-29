@@ -5,8 +5,12 @@ require_once($root . "/controller/controller_panier.php");
 require_once($root . "/controller/controller_client.php");
 
 $id_panier = $_GET["id_panier"];
-// $id_client = $_SESSION["id_client"];
-$id_client = 1;
+
+session_start();
+if (isset($_SESSION["id_client"])) {
+    $id_client = $_SESSION["id_client"];
+}
+
 $panier = produitCommande($id_panier);
 $prixTotal = prixQtt($id_panier);
 
@@ -48,12 +52,6 @@ $adresseFacture = adresseFacturation($id_client);
                         <select name="quantite[]" disabled>
                             <option value="<?= $pan["quantite"] ?>"><?= $pan["quantite"] ?></option>
                         </select>
-                        <br>
-                        <button class="bouton_suppr_produit_panier" type="button" disabled>
-                            <span class="material-symbols-outlined">
-                                delete
-                            </span>
-                        </button>
                     </div>
                 </div>
             <?php

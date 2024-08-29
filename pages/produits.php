@@ -5,8 +5,13 @@ require_once($root . "/controller/controller_produit.php");
 require_once($root . "/controller/controller_image.php");
 
 $id_produit = $_GET['id_produit'];
-$id_client = 1;
-// $id_client = $_SESSION["id_client"];
+
+session_start();
+if (isset($_SESSION["id_client"])) {
+    $id_client = $_SESSION["id_client"];
+}
+
+echo $id_client;
 
 //Récupère les images du produit
 $images = imageProduit($id_produit);

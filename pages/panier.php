@@ -4,8 +4,12 @@ $root = $_SERVER["DOCUMENT_ROOT"];
 require_once($root . "/controller/controller_panier.php");
 require_once($root . "/controller/controller_produit.php");
 
-// $id_client = $_SESSION["id_client"];
-$id_client = 1;
+session_start();
+if (isset($_SESSION["id_client"])) {
+    $id_client = $_SESSION["id_client"];
+}
+
+echo $id_client;
 
 $panier = affichePanier($id_client);
 $id_panier = maxPanierId($id_client);

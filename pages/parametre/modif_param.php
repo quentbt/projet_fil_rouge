@@ -3,7 +3,11 @@
 require_once "../../connexion_bdd/connexion_bdd.php";
 
 $bdd = db_connect();
-$sessionId = 1; //$_SESSION["id"];
+
+session_start();
+if (isset($_SESSION["id_client"])) {
+    $id_client = $_SESSION["id_client"];
+}
 
 $userParam = $bdd->prepare("SELECT * FROM clients WHERE id_client = :id");
 $userParam->bindParam(":id", $sessionId);

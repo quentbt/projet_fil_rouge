@@ -4,6 +4,11 @@ $root = $_SERVER["DOCUMENT_ROOT"];
 require_once($root . "/controller/controller_categorie.php");
 require_once($root . "/controller/controller_produit.php");
 
+session_start();
+if (isset($_SESSION["id_client"])) {
+    $id_client = $_SESSION["id_client"];
+}
+
 $categorie = allCategorie();
 
 $materiaux = allMateriaux();

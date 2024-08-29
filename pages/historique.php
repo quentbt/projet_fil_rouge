@@ -3,7 +3,13 @@
 $root = $_SERVER["DOCUMENT_ROOT"];
 require_once($root . "/controller/controller_client.php");
 
-$id_client = 1;
+session_start();
+if (isset($_SESSION["id_client"])) {
+    $id_client = $_SESSION["id_client"];
+}
+
+echo $id_client;
+
 $commandes = commandeUser($id_client);
 
 ?>

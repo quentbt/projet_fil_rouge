@@ -4,6 +4,11 @@ require_once($root . '/controller/controller_produit.php');
 require_once($root . '/controller/controller_categorie.php');
 require_once($root . '/controller/controller_image.php');
 
+session_start();
+if (isset($_SESSION["id_client"])) {
+    $id_client = $_SESSION["id_client"];
+}
+
 
 $id_produit = $_GET["id_produit"];
 

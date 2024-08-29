@@ -3,6 +3,10 @@
 $root = $_SERVER["DOCUMENT_ROOT"];
 include($root . "/controller/controller_graph.php");
 
+session_start();
+if (isset($_SESSION["id_client"])) {
+    $id_client = $_SESSION["id_client"];
+}
 
 if (isset($_POST["graphVenteSemaine"])) {
     $semaineBar = $_POST["semaineBar"];
