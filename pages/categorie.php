@@ -39,6 +39,10 @@ $image = imageCategorie($categ);
 
 <!DOCTYPE html>
 <html lang="en">
+    
+<?php
+    require_once '../menu/menu.php';
+?>
 
 <head>
     <meta charset="UTF-8">
@@ -48,6 +52,50 @@ $image = imageCategorie($categ);
     <link rel="stylesheet" href="css_files/carteCateg.css">
     <link rel="stylesheet" href="css_files/categorie.css">
     <title>Catégorie</title>
+    <style>
+        body {
+            background: radial-gradient(ellipse farthest-corner at bottom right, #e0ffff,beige );
+            background-size: cover;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        }
+
+        .form-card {
+            background-color: rgba(255, 255, 255, 0.9); /* Légère transparence pour laisser entrevoir le fond */
+            border: none;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .card {
+            background-color: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        .pagination .page-item.active .page-link {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .pagination .page-link {
+            color: #007bff;
+        }
+
+        .pagination .page-link:hover {
+            color: #0056b3;
+        }
+    </style>
 </head>
 
 <body>

@@ -1,0 +1,45 @@
+body {
+    background: radial-gradient(ellipse farthest-corner at bottom right, #e0ffff, beige);
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+}
+
+.container {
+    margin-top: 20px;
+}
+
+.chart-container {
+    background-color: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 30px; /* Adds space between chart sections */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.chart-container canvas {
+    width: 100% !important; /* Ensures canvas scales properly */
+    height: auto !important; /* Ensures canvas scales properly */
+}
+
+.form-container {
+    margin-bottom: 30px; /* Adds space between forms */
+}
+
+.form-container .form-label {
+    display: block;
+    margin-top: 10px;
+}
+
+.form-container .form-range {
+    margin-top: 10px;
+}
+
+.form-container .btn {
+    margin-top: 10px;
+}
+
+.form-container p {
+    margin-top: 10px;
+}

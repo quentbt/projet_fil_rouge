@@ -1,23 +1,39 @@
-* {
-    box-sizing: border-box;
+body {
+    background: radial-gradient(ellipse farthest-corner at bottom right, #e0ffff,beige );
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
 }
 
-.lien {
-
-    text-decoration: none;
-    color: black;
-    margin-bottom: 1rem;
+.form-card {
+    background-color: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .ligne {
-    margin-bottom: 1rem;
-    margin-top: 1rem;
-    padding: 1rem;
-    border-bottom: solid lightgrey 1px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
 }
 
 .ligne:hover {
+    transform: scale(1.05);
+}
 
-    background-color: antiquewhite;
-    border-radius: 15px;
+.lien {
+    text-decoration: none;
+    color: inherit;
+}
+
+.lien:hover {
+    text-decoration: none;
+    color: inherit;
 }

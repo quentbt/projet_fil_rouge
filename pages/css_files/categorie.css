@@ -1,124 +1,42 @@
-.sidenav {
-    height: 100%;
-    width: 0;
-    position: fixed;
-    top: 0;
-    left: 0;
-    background-color: #333;
-    overflow-x: hidden;
-    transition: 0.5s;
-    padding-top: 60px;
+body {
+    background: radial-gradient(ellipse farthest-corner at bottom right, #e0ffff,beige );
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
 }
 
-.sidenav a {
-    padding: 15px 20px;
-    text-decoration: none;
-    font-size: 18px;
-    color: white;
-    display: block;
-    transition: background-color 0.3s;
-}
-
-.sidenav form {
-    padding: 15px 20px;
-    text-decoration: none;
-    font-size: 18px;
-    color: white;
-    display: block;
-    transition: background-color 0.3s;
-}
-
-.sidenav form input {
-    margin-top: 5px;
-    border-radius: 15px;
-}
-
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
-.sidenav a:hover {
-    background-color: #575757;
-}
-
-.sidenav .closebtn {
-    position: absolute;
-    top: 0;
-    right: 25px;
-    font-size: 36px;
-    margin-left: 50px;
-}
-
-.openbtn {
-    font-size: 20px;
-    cursor: pointer;
-    background-color: #333;
-    color: white;
-    padding: 10px 15px;
+.form-card {
+    background-color: rgba(255, 255, 255, 0.9); /* Légère transparence pour laisser entrevoir le fond */
     border: none;
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    z-index: 1;
-}
-
-.content {
-    margin-left: 60px;
-    padding: 20px;
-    transition: margin-left 0.5s;
-}
-
-@media screen and (max-height: 450px) {
-    .sidenav {
-        padding-top: 15px;
-    }
-
-    .sidenav a {
-        font-size: 18px;
-    }
-}
-
-.button_submit {
-    background-color: #333;
-    color: white;
     border-radius: 10px;
-    margin-left: 5%;
+    padding: 20px;
+    margin-top: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.materiel-item {
-    cursor: pointer;
-    display: inline-block;
-    margin: 5px;
-    padding: 5px 10px;
-    border: 2px solid #e0e0e0;
-    /* Ajoute une bordure subtile */
-    border-radius: 5px;
-    transition: border-color 0.3s ease, background-color 0.3s ease;
+.card {
+    background-color: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
 }
 
-.materiel-item input[type="checkbox"] {
-    display: none;
-    /* Masque la case à cocher */
+.card:hover {
+    transform: scale(1.05);
 }
 
-.materiel-item span {
-    font-size: 15px;
-    transition: font-size 0.3s ease, color 0.3s ease;
+.pagination .page-item.active .page-link {
+    background-color: #007bff;
+    border-color: #007bff;
 }
 
-.materiel-item input[type="checkbox"]:checked+span {
-    font-size: 18px;
-    /* Agrandit le texte lorsque la checkbox est cochée */
-    color: #4CAF50;
-    /* Change la couleur du texte lorsqu'il est sélectionné */
+.pagination .page-link {
+    color: #007bff;
 }
 
-/* Effet au survol */
-.materiel-item:hover {
-    border-color: #4CAF50;
-    /* Change la couleur de la bordure au survol */
-    background-color: #f0f0f0;
-    /* Change légèrement le fond au survol */
+.pagination .page-link:hover {
+    color: #0056b3;
 }

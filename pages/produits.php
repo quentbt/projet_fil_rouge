@@ -9,9 +9,10 @@ $id_produit = $_GET['id_produit'];
 session_start();
 if (isset($_SESSION["id_client"])) {
     $id_client = $_SESSION["id_client"];
+    echo $id_client;
 }
 
-echo $id_client;
+
 
 //Récupère les images du produit
 $images = imageProduit($id_produit);
@@ -31,7 +32,9 @@ $quantite = quantite($id_produit);
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
+<?php
+    require_once '../menu/menu.php';
+?>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -40,6 +43,7 @@ $quantite = quantite($id_produit);
     <link rel="stylesheet" href="css_files/page_produits.css">
     <link rel="stylesheet" href="css_files/carteCateg.css">
     <link rel="stylesheet" href="css_files/carrousel.css">
+    <link rel="stylesheet" href="css_files/produit.css">
     <script src="/pages/js_files/carrousel.js"></script>
     <title>Page produit</title>
 </head>

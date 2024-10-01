@@ -1,20 +1,25 @@
 <?php
 
 $root = $_SERVER["DOCUMENT_ROOT"];
-require_once($root . "/controller/controller_client.php");
+// require_once($root . "/controller/controller_client.php");
+require_once("../controller/controller_client.php");
 
 session_start();
 if (isset($_SESSION["id_client"])) {
     $id_client = $_SESSION["id_client"];
+     $id_client;
 }
 
-echo $id_client;
+
 
 $commandes = commandeUser($id_client);
 
 ?>
 <!DOCTYPE html>
 <html lang="en">
+<?php
+    require_once '../menu/menu.php';
+?>
 
 <head>
     <meta charset="UTF-8">

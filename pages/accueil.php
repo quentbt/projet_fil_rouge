@@ -7,9 +7,10 @@ require_once($root . '/controller/controller_produit.php');
 session_start();
 if (isset($_SESSION["id_client"])) {
     $id_client = $_SESSION["id_client"];
+    echo $id_client;
+
 }
 
-echo $id_client;
 
 $categories = categorieAccueil();
 $produits = produitAccueil();
@@ -18,6 +19,9 @@ $images = produitCarrousel();
 ?>
 <!DOCTYPE html>
 <html lang="fr">
+<?php
+    require_once '../menu/menu.php';
+?>
 
 <head>
     <meta charset="UTF-8">
@@ -28,6 +32,8 @@ $images = produitCarrousel();
     <link rel="stylesheet" href="css_files/navbar.css">
     <link rel="stylesheet" href="css_files/carrousel.css">
     <link rel="stylesheet" href="css_files/carteCateg.css">
+    <link rel="stylesheet" href="css_files/accueil.css">
+
     <script src="js_files/carrousel.js"></script>
     <title>Airneis</title>
 </head>
@@ -48,7 +54,26 @@ $images = produitCarrousel();
         <?php foreach ($categories as $categorie) { ?>
             <div class="col-3 m-3">
                 <a href="/pages/categorie.php?categorie=<?= $categorie["categorie"] ?>" class="card">
-                    <img src="<?= $categorie["img_categ"] ?>" alt="">
+
+                <?php if ($categorie["categorie"] == "table basse") { ?>
+                    <img src="../images/categorie/table-basse-chene-huile.jpg" alt="Table basse chêne huilé">
+
+                <?php } elseif ($categorie["categorie"] == "canapé") { ?>
+                    <img src="../images/categorie/canape.png" alt="canapé">   
+                    
+                <?php } elseif ($categorie["categorie"] == "chaise") { ?>
+                    <img src="../images/categorie/canape.png" alt="canapé">   
+
+                <?php } elseif ($categorie["categorie"] == "Chaise ") { ?>
+                    <img src="../images/categorie/canape.png" alt="Chaise">
+
+                <?php } elseif ($categorie["categorie"] == "lit") { ?>
+                    <img src="../images/categories/canape.png" alt="Lit confort">
+
+                <?php } else { ?>
+
+                    <img src="<?= $categorie['img_categ'] ?>" alt="<?= ucfirst($categorie["categorie"]) ?>">
+                <?php } ?>
                     <h2 class="product-name"><?= ucfirst($categorie["categorie"]) ?></h2>
                 </a>
             </div>

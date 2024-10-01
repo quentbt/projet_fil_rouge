@@ -7,7 +7,11 @@ $users = allUser();
 // PAGE IMPOSSIBLE D'ACCES SI L'UTILISATEUR N'EST PAS ADMIN.
 ?>
 <!DOCTYPE html>
+
 <html lang="en">
+<?php
+    require_once '../../menu/menu.php';
+?>
 
 <head>
     <meta charset="UTF-8">
