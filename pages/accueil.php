@@ -61,15 +61,21 @@ $images = produitCarrousel();
                 <?php } elseif ($categorie["categorie"] == "canapé") { ?>
                     <img src="../images/categorie/canape.png" alt="canapé">   
                     
-                <?php } elseif ($categorie["categorie"] == "chaise") { ?>
-                    <img src="../images/categorie/canape.png" alt="canapé">   
-
-                <?php } elseif ($categorie["categorie"] == "Chaise ") { ?>
-                    <img src="../images/categorie/canape.png" alt="Chaise">
-
                 <?php } elseif ($categorie["categorie"] == "lit") { ?>
-                    <img src="../images/categories/canape.png" alt="Lit confort">
+                    <img src="../images/categorie/lit.jpg" alt="canapé">   
 
+                <?php } elseif ($categorie["categorie"] == "chaise") { ?>
+                    <img src="../images/categorie/chaise.jpg" alt="Chaise">
+
+                <?php } elseif ($categorie["categorie"] == "lampe") { ?>
+                    <img src="../images/categorie/lampe.jpg" alt="lampe">
+                
+                <?php } elseif ($categorie["categorie"] == "décoration") { ?>
+                    <img src="../images/categorie/decoration.jpg" alt="décoration">
+
+                <?php } elseif ($categorie["categorie"] == "bibliothèque") { ?>
+                    <img src="../images/categorie/bibliotheque .jpg" alt="Bibliotheque">
+                
                 <?php } else { ?>
 
                     <img src="<?= $categorie['img_categ'] ?>" alt="<?= ucfirst($categorie["categorie"]) ?>">
@@ -86,7 +92,7 @@ $images = produitCarrousel();
         <?php foreach ($produits as $produit) { ?>
             <div class="col-3 m-3">
                 <a href="/pages/produits.php?id_produit=<?= $produit["id_produit"] ?>" class="card">
-                    <img src="<?= $produit["image_produit"] ?>" alt="">
+                    <img src="../images/categorie/double_fuank.jpg" alt="double fuank">
                     <h2 class="product-name"><?= ucfirst($produit["nom"]) ?></h2>
                 </a>
             </div>
