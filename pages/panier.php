@@ -29,6 +29,9 @@ $tva = 0;
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link rel="stylesheet" href="css_files/panier.css">
+
+    <script src="https://js.stripe.com/v3/"></script>
+
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <title>Panier</title>
@@ -38,7 +41,7 @@ $tva = 0;
     <h1 class="text-center">Panier</h1>
 
     <div class="row center">
-        <form action="../controller/controller_formulaire.php" method="POST" class="d-flex justify-content-between">
+        <form action="create-checkout-session.php" method="POST" class="d-flex justify-content-between">
             <input type="hidden" name="id_panier" id="id_panier" value="<?= $id_panier ?>">
             <input type="hidden" name="id_client" value="<?= $id_client ?>">
             <div class="col-5">
@@ -83,11 +86,74 @@ $tva = 0;
                 <div class="row tva">
                     <div class="col-10">TVA</div>
                     <div class="col-2"><?= $tva ?>€</div>
-                </div>
-                <button class="bouton_acheter" type="submit" name="produits_acheter">acheter</button>
-            </div>
+
+                <form action="checkout.php" method="POST">
+                    <button type="submit" id="checkout-button">Payer</button>
+                </form>
+
+                <!-- <button id="checkout-button">Payer avec Stripe</button> -->
         </form>
     </div>
+
+<script src="https://js.stripe.com/v3/"></script>
+<script type="text/javascript">
+    var stripe = Stripe('pk_test_51Q51MLGqRZhDnoeODGFovBEMepiHc4qSUzBWoobMprsQsXRLiWXI68qQG0H9UANOCctD7uBnXNzPeuIh5c8XH6Sl00obZln9dC'); // Ta clé publique
+
+    document.getElementById('checkout-button').addEventListener('click', function (e) {
+    e.preventDefault();
+
+    // Récupérer les informations à envoyer
+    var idPanier = document.getElementById('id_panier').value;
+    var idClient = '<?= $id_client ?>'; // Récupère l'ID du client à partir de PHP
+    var produits = [];
+
+    // Parcourir chaque produit et ajouter les informations au tableau "produits"
+    document.querySelectorAll('.produit_panier').forEach(function (element) {
+        var idProduit = element.querySelector('input[name="id_produit[]"]').value;
+        var quantite = element.querySelector('select[name="quantite_panier[]"]').value;
+
+        produits.push({
+            id_produit: idProduit,
+            quantite: quantite
+        });
+    });
+
+    // Vérifie si les données sont correctement récupérées
+    console.log("ID Panier:", idPanier);
+    console.log("ID Client:", idClient);
+    console.log("Produits:", produits);
+
+    // Envoyer la requête avec les données JSON
+    fetch('http://localhost:3000/create-checkout-session.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            id_panier: idPanier,
+            id_client: idClient,
+            produits: produits
+        }),
+    })
+    .then(function (response) {
+        return response.json();
+    })
+    .then(function (session) {
+        if (session.id) {
+            return stripe.redirectToCheckout({ sessionId: session.id });
+        } else {
+            console.error('Erreur: ', session.error);
+        }
+    })
+    .catch(function (error) {
+        console.error('Erreur lors de la requête Fetch:', error);
+    });
+});
+
+
+</script>
+
+
     <script>
         $(document).ready(function() {
             $(".bouton_suppr_produit_panier").click(function(e) {
