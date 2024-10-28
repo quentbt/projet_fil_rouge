@@ -11,6 +11,7 @@ $users = allUser();
 <html lang="en">
 <?php
     require_once '../../menu/menu.php';
+    
 ?>
 
 <head>
@@ -23,6 +24,7 @@ $users = allUser();
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
     <link rel="stylesheet" href="../css_files/table_back.css">
+    <link rel="stylesheet" href="css_files/back_client.css">
     <title>back-office Clients</title>
 </head>
 

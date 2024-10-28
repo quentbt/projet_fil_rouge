@@ -97,11 +97,9 @@
                     <a class="nav-link" href="../pages/historique.php">Historique</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="../pages/back_client.php">Back Client</a>
+                    <a class="nav-link" href="../pages/admin/back_client.php">Back Client</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="../pages/test_graph.php">Test Graph</a>
-                </li>
+            
             </ul>
             
         </div>

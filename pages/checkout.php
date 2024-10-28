@@ -1,37 +1,48 @@
-<?php
-require 'vendor/autoload.php'; // Inclut Stripe PHP SDK
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Paiement - Stripe</title>
+    <script src="https://js.stripe.com/v3/"></script> <!-- Stripe.js -->
+</head>
+<body>
 
-try {
-    \Stripe\Stripe::setApiKey('sk_test_51Q51MLGqRZhDnoeOqGzwl1lZyKBAodebPTOn6LOqLj5TWlaxcYQvmJLuf0gY1xCfHWaplvQJ6hQaqLErmuPCcNdD00g0UL81K6'); // Clé API privée
+<h2>Panier</h2>
+<p>Montant total : 360€</p> <!-- Remplacez par le montant réel de votre panier -->
 
-    $checkout_session = \Stripe\Checkout\Session::create([
-        'payment_method_types' => ['card'],
-        'line_items' => [[
-            'price_data' => [
-                'currency' => 'eur',
-                'product_data' => [
-                    'name' => 'Produit exemple',
-                ],
-                'unit_amount' => 2000, // 20,00 €
-            ],
-            'quantity' => 1,
-        ]],
-        'mode' => 'payment',
-        'success_url' => 'https://localhost:3000/success.php',
-        'cancel_url' => 'https://localhost:3000/cancel.php',
-    ]);
+<!-- Bouton de paiement Stripe -->
+<button id="checkout-button">Procéder au paiement</button>
 
-    // Répondre en JSON valide
-    header('Content-Type: application/json');
-    echo json_encode(['id' => $checkout_session->id]);
+<script type="text/javascript">
+    // Initialisation de Stripe avec votre clé publique
+    const stripe = Stripe('pk_test_51Q51MLGqRZhDnoeODGFovBEMepiHc4qSUzBWoobMprsQsXRLiWXI68qQG0H9UANOCctD7uBnXNzPeuIh5c8XH6Sl00obZln9dC'); 
 
-} catch (Exception $e) {
-    // Gérer l'erreur
-    http_response_code(500); // Statut 500 pour indiquer une erreur serveur
-    echo json_encode(['error' => $e->getMessage()]);
-}
+    document.getElementById('checkout-button').addEventListener('click', function () {
+        // Envoi d'une requête pour créer une session de paiement
+        fetch('/projet_fil_rouge/pages/checkout_session.php', { // Assurez-vous que le chemin est correct
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                items: [
+                    { id: 'product_id', quantity: 1 } // Remplacez avec des informations de produit dynamiques
+                ]
+            })
+        })
+        .then(response => response.json())
+        .then(session => {
+            // Redirection vers Stripe Checkout avec l'ID de session
+            return stripe.redirectToCheckout({ sessionId: session.id });
+        })
+        .then(result => {
+            if (result.error) {
+                alert(result.error.message);
+            }
+        })
+        .catch(error => console.error('Erreur:', error));
+    });
+</script>
 
-
-
-echo json_encode(['id' => $checkout_session->id]);
-?>
+</body>
+</html>

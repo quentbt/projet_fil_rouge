@@ -97,7 +97,7 @@ $tva = 0;
 
 <script src="https://js.stripe.com/v3/"></script>
 <script type="text/javascript">
-    var stripe = Stripe('pk_test_51Q51MLGqRZhDnoeODGFovBEMepiHc4qSUzBWoobMprsQsXRLiWXI68qQG0H9UANOCctD7uBnXNzPeuIh5c8XH6Sl00obZln9dC'); // Ta clé publique
+    var stripe = Stripe('pk_test_51Q51MLGqRZhDnoeODGFovBEMepiHc4qSUzBWoobMprsQsXRLiWXI68qQG0H9UANOCctD7uBnXNzPeuIh5c8XH6Sl00obZln9dC'); // clé publique
 
     document.getElementById('checkout-button').addEventListener('click', function (e) {
     e.preventDefault();
